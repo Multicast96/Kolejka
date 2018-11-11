@@ -6,12 +6,13 @@ public class FieldManager : MonoBehaviour {
 
     //public PawnManager pawnManager;
     public GameManager gameManager;
-    
+    bool isTaken;
 
 	// Use this for initialization
 	void Start () {
         gameObject.GetComponent<Renderer>().enabled = false;
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
+        isTaken = false;
 	}
 	
 	// Update is called once per frame
@@ -31,6 +32,9 @@ public class FieldManager : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        gameManager.PutPawn(gameObject);
+        if (!isTaken) {
+            gameManager.PutPawn(gameObject);
+            isTaken = true;
+        }
     }
 }
