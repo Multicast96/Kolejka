@@ -52,9 +52,6 @@ public class GameManager : MonoBehaviour {
             players.Add(new Player(colors[i], i, false, shoppingLists[(firstList+i)%5]));
         }
         players[numberOfPlayers].isPlayerAI = true; // jeden gracz SI
-
-        
-
     }
 
     // Update is called once per frame
@@ -64,7 +61,8 @@ public class GameManager : MonoBehaviour {
 
     public void PutPawn(GameObject field)
     {
-        UnityEngine.Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Pawn.prefab", typeof(GameObject));
+        Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Pawn.prefab", typeof(GameObject));
+
         GameObject pawn = Instantiate(prefab, field.transform.position, field.transform.rotation) as GameObject;
         pawn.GetComponent<Renderer>().material.color = players[currentPlayer].pawnColor;
         pawn.transform.SetParent(field.transform);
@@ -79,7 +77,7 @@ public class GameManager : MonoBehaviour {
             currentPlayer = 0;
         }
     }
-
+  
     public void EndOfTurn()
     {
         if (currentPlayer < numberOfPlayers)
