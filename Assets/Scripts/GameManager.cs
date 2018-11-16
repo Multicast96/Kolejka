@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField] GameObject vendor;
     public enum Day { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };
-    public enum Phase { PawnsPlacing, Supply, Maniputalions, Opening, Trading, TePeZet };
+    public enum Phase { PawnsPlacing, Supply, Manipulations, Opening, Trading, TePeZet };
 
     public int week;
     public Day day;
@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public int turn;
     public int currentPlayer;
 
+    // gracz zaczynajacy dzien
     public int markedPlayer;
 
     public int numberOfTurns;
@@ -61,30 +62,30 @@ public class GameManager : MonoBehaviour {
 
     public void PutPawn(GameObject field)
     {
-        Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Pawn.prefab", typeof(GameObject));
+        if (players[currentPlayer].pawnsInHand > 0 && phase.Equals(Phase.PawnsPlacing))
+        {
+            Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Pawn.prefab", typeof(GameObject));
+            GameObject pawn = Instantiate(prefab, field.transform.position, field.transform.rotation) as GameObject;
+            pawn.GetComponent<Renderer>().material.color = players[currentPlayer].pawnColor;
+            pawn.transform.SetParent(field.transform);
+            players[currentPlayer].PutDownPawn();
+        }
 
-        GameObject pawn = Instantiate(prefab, field.transform.position, field.transform.rotation) as GameObject;
-        pawn.GetComponent<Renderer>().material.color = players[currentPlayer].pawnColor;
-        pawn.transform.SetParent(field.transform);
-        this.GetNextPlayer();
+        this.EndOfTurn();
     }
 
     public void GetNextPlayer()
-    {
-        currentPlayer++;
-        if (currentPlayer > numberOfPlayers)
-        {
-            currentPlayer = 0;
-        }
-    }
-  
-    public void EndOfTurn()
     {
         if (currentPlayer < numberOfPlayers)
             currentPlayer++;
         else
             currentPlayer = 0;
-
+    }
+  
+    public void EndOfTurn()
+    {
+        this.GetNextPlayer();
+ 
         if (currentPlayer == markedPlayer)
         {
             if (turn < numberOfTurns)
