@@ -9,15 +9,13 @@ public class Player {
     public Color pawnColor;
 
     public int numberOfPlayer;
-    public bool isPlayerAI;
     public ShoppingList shoppinglist;
 
-    public Player(Color color, int numberOfPlayer, bool isPlayerAI, ShoppingList shoppinglist)
+    public Player(Color color, int numberOfPlayer, ShoppingList shoppinglist)
     {
         this.pawnColor = color;
         this.pawnsInHand = maxPawns;
         this.numberOfPlayer = numberOfPlayer;
-        this.isPlayerAI = isPlayerAI;
         this.shoppinglist = shoppinglist;
     }
 
@@ -39,8 +37,5 @@ public class Player {
         return pawnsInHand;
     }
 
-    public void MakeMove ()
-    {
-
-    }
+    public virtual void MakeMove (){}
 }
