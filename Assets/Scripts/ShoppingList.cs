@@ -8,8 +8,18 @@ public class ShoppingList : MonoBehaviour {
     [SerializeField] int electronic;
     [SerializeField] int grocery;
     [SerializeField] int newsman;
-    [SerializeField] int furniture;
     [SerializeField] int cloth;
+    [SerializeField] int furniture;
+
+    public ShoppingList (string target, int electronic, int grocery, int newsman, int cloth, int furniture)
+    {
+        this.target = target;
+        this.electronic = electronic;
+        this.grocery = grocery;
+        this.newsman = newsman;
+        this.cloth = cloth;
+        this.furniture = furniture;
+    }
 
     // Use this for initialization
     void Start () {
