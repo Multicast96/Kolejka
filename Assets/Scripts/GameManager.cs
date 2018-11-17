@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour {
 
@@ -16,6 +17,7 @@ public class GameManager : MonoBehaviour {
     public Phase phase;
     public int turn;
     public int currentPlayer;
+    public UIManager uiManager;
 
     // gracz zaczynajacy dzien
     public int markedPlayer;
@@ -23,9 +25,11 @@ public class GameManager : MonoBehaviour {
     public int numberOfTurns;
     public int numberOfPlayers;
 
+    public List<Sprite> shoppingListImages = new List<Sprite>(5);
     List<Player> players = new List<Player>();
     List<ShoppingList> shoppingLists = new List<ShoppingList>();
     Dictionary<Shop, QueueManager> queues = new Dictionary<Shop, QueueManager>();
+    
 
     // Use this for initialization
     void Start()
@@ -35,6 +39,11 @@ public class GameManager : MonoBehaviour {
         phase = Phase.PawnsPlacing;
         turn = 0;
         currentPlayer = 0;
+
+        uiManager.UpdateDay(day);
+        uiManager.UpdateWeek(week);
+        uiManager.UpdatePlayer(currentPlayer);
+        uiManager.UpdatePhase(phase);
 
         markedPlayer = 0;
         numberOfPlayers = 4;
@@ -47,11 +56,12 @@ public class GameManager : MonoBehaviour {
         queues.Add(Shop.Clothing, GameObject.Find("Clothing Queue").GetComponent<QueueManager>());
         queues.Add(Shop.Bazaar, GameObject.Find("Bazaar Queue").GetComponent<QueueManager>());
 
-        shoppingLists.Add(new ShoppingList("wyposazyc kuchnie", 4, 0, 1, 2, 3));
-        shoppingLists.Add(new ShoppingList("wyprawic pierwsza komunie", 3, 4, 0, 1, 2));
-        shoppingLists.Add(new ShoppingList("spedzic urlop na dzialce", 2, 3, 4, 0, 1));
-        shoppingLists.Add(new ShoppingList("wyslac dzieci na kolonie", 1, 2, 3, 4, 0));
-        shoppingLists.Add(new ShoppingList("urzadzic mieszkanie z przydzialu", 0, 1, 2, 3, 4));
+        shoppingLists.Add(new ShoppingList(shoppingListImages[0], "wyposazyc kuchnie", 4, 0, 1, 2, 3));
+        shoppingLists.Add(new ShoppingList(shoppingListImages[1], "wyprawic pierwsza komunie", 3, 4, 0, 1, 2));
+        shoppingLists.Add(new ShoppingList(shoppingListImages[2], "spedzic urlop na dzialce", 2, 3, 4, 0, 1));
+        shoppingLists.Add(new ShoppingList(shoppingListImages[3], "wyslac dzieci na kolonie", 1, 2, 3, 4, 0));
+        shoppingLists.Add(new ShoppingList(shoppingListImages[4], "urzadzic mieszkanie z przydzialu", 0, 1, 2, 3, 4));
+        uiManager.UpdateShoppingList(shoppingListImages[0]);
 
         System.Random rnd = new System.Random();
         int firstList = rnd.Next(1, 5);
@@ -87,6 +97,7 @@ public class GameManager : MonoBehaviour {
     public void GetNextPlayer()
     {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
+        uiManager.UpdatePlayer(currentPlayer);
     }
   
     public void EndOfTurn()
@@ -102,7 +113,10 @@ public class GameManager : MonoBehaviour {
                 turn = 0;
 
                 if (phase != Phase.TePeZet)
+                {
                     phase++;
+                    uiManager.UpdatePhase(phase);
+                }                
                 else
                 {
                     phase = Phase.PawnsPlacing;
@@ -113,15 +127,20 @@ public class GameManager : MonoBehaviour {
                         markedPlayer = 0;
 
                     if (day != Day.Saturday)
+                    {
                         day++;
+                        uiManager.UpdateDay(day);
+                    }                       
                     else
                     {
                         day = Day.Monday;
                         week++;
+                        uiManager.UpdateWeek(week);
                     }
                 }
             }
         }
+        
         players[currentPlayer].MakeMove();
     }
 }

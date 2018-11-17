@@ -12,7 +12,6 @@ public class FieldManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        gameObject.GetComponent<Renderer>().enabled = false;
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         isTaken = false;
     }
