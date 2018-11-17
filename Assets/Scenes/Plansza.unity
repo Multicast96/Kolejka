@@ -723,7 +723,7 @@ MonoBehaviour:
   weekText: {fileID: 880924652}
   playerText: {fileID: 1113229964}
   phaseText: {fileID: 1938048992}
-  shoppingList: {fileID: 0}
+  shoppingList: {fileID: 969015799}
 --- !u!1 &353906231
 GameObject:
   m_ObjectHideFlags: 0
@@ -1492,7 +1492,12 @@ MonoBehaviour:
   markedPlayer: 0
   numberOfTurns: 0
   numberOfPlayers: 0
-  shoppingListImages: []
+  shoppingListImages:
+  - {fileID: 21300000, guid: 6077268b49727ee4ba907fd5ee9c1a49, type: 3}
+  - {fileID: 21300000, guid: f503f57dd5d03e2419df789868330bd1, type: 3}
+  - {fileID: 21300000, guid: 15cf93676e607c649bf7ed05125488fe, type: 3}
+  - {fileID: 21300000, guid: e32fc02d441eb5c4da041f19e4f7f99b, type: 3}
+  - {fileID: 21300000, guid: 9ce0888a3d018364b9440573227bf641, type: 3}
 --- !u!1 &615787535
 GameObject:
   m_ObjectHideFlags: 0
@@ -3437,7 +3442,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1357117158}
-  - component: {fileID: 1357117159}
   m_Layer: 0
   m_Name: Field 1
   m_TagString: Untagged
@@ -3459,18 +3463,6 @@ Transform:
   m_Father: {fileID: 749498089}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1357117159
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1357117157}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1a621931368994544b2a5149c2b40fb9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameManager: {fileID: 0}
 --- !u!1 &1381854172
 GameObject:
   m_ObjectHideFlags: 0
