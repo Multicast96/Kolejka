@@ -11,7 +11,8 @@ public class QueueManager : MonoBehaviour {
 	void Start () {
         gameObject.GetComponent<Renderer>().enabled = false;
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-        isFull = true;
+     isFull = true;
+
     }
 	
 	// Update is called once per frame
@@ -31,14 +32,24 @@ public class QueueManager : MonoBehaviour {
 
     private void OnMouseDown()
     {
+        PutPawn();
+    }
+
+    public bool PutPawn()
+    {
+        /* zwraca true jeśli udało sie postawić pionek
+         * zwraca false jeśli nie można było postawić pionka,
+         * bo kolejka była już pełna */
+
         FieldManager[] children = gameObject.GetComponentsInChildren<FieldManager>();
         foreach (FieldManager child in children)
         {
             if (!child.isTaken)
             {
                 child.PutPawn();
-                break;
+                return true;
             }
         }
+        return false;
     }
 }
