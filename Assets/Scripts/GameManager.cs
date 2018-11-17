@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour {
     public int numberOfTurns;
     public int numberOfPlayers;
 
-    public List<Sprite> shoppingListImages = new List<Sprite>(5);
+    public List<Sprite> shoppingListImages = new List<Sprite>();
     List<Player> players = new List<Player>();
     List<ShoppingList> shoppingLists = new List<ShoppingList>();
     Dictionary<Shop, QueueManager> queues = new Dictionary<Shop, QueueManager>();
@@ -61,10 +61,10 @@ public class GameManager : MonoBehaviour {
         shoppingLists.Add(new ShoppingList(shoppingListImages[2], "spedzic urlop na dzialce", 2, 3, 4, 0, 1));
         shoppingLists.Add(new ShoppingList(shoppingListImages[3], "wyslac dzieci na kolonie", 1, 2, 3, 4, 0));
         shoppingLists.Add(new ShoppingList(shoppingListImages[4], "urzadzic mieszkanie z przydzialu", 0, 1, 2, 3, 4));
-        uiManager.UpdateShoppingList(shoppingListImages[0]);
+        
 
         System.Random rnd = new System.Random();
-        int firstList = rnd.Next(1, 5);
+        int firstList = rnd.Next(0, 5);
 
         Color[] colors = { Color.magenta, Color.yellow, Color.green, Color.blue, Color.red };
         for(int i = 0; i < numberOfPlayers - 1; i++)
@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour {
     {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         uiManager.UpdatePlayer(currentPlayer);
+        uiManager.UpdateShoppingList(players[currentPlayer].shoppinglist.image);
     }
   
     public void EndOfTurn()
