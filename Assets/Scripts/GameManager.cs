@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
     public enum Day { Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };
     public enum Phase { PawnsPlacing, Supply, Manipulations, Opening, Trading, TePeZet };
 
+    public enum Shop { Newsstand, Grocery, Electronic, Furniture, Clothing, Bazaar}
+
     public int week;
     public Day day;
     public Phase phase;
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour {
 
     List<Player> players = new List<Player>();
     List<ShoppingList> shoppingLists = new List<ShoppingList>();
+    Dictionary<Shop, QueueManager> queues = new Dictionary<Shop, QueueManager>();
 
     // Use this for initialization
     void Start()
@@ -37,6 +40,13 @@ public class GameManager : MonoBehaviour {
         numberOfPlayers = 4;
         numberOfTurns = 4;
 
+        queues.Add(Shop.Newsstand, GameObject.Find("Newsstand Queue").GetComponent<QueueManager>());
+        queues.Add(Shop.Grocery, GameObject.Find("Grocery Queue").GetComponent<QueueManager>());
+        queues.Add(Shop.Electronic, GameObject.Find("Electronic Queue").GetComponent<QueueManager>());
+        queues.Add(Shop.Furniture, GameObject.Find("Furniture Queue").GetComponent<QueueManager>());
+        queues.Add(Shop.Clothing, GameObject.Find("Clothing Queue").GetComponent<QueueManager>());
+        queues.Add(Shop.Bazaar, GameObject.Find("Bazaar Queue").GetComponent<QueueManager>());
+
         shoppingLists.Add(new ShoppingList("wyposazyc kuchnie", 4, 0, 1, 2, 3));
         shoppingLists.Add(new ShoppingList("wyprawic pierwsza komunie", 3, 4, 0, 1, 2));
         shoppingLists.Add(new ShoppingList("spedzic urlop na dzialce", 2, 3, 4, 0, 1));
@@ -46,13 +56,13 @@ public class GameManager : MonoBehaviour {
         System.Random rnd = new System.Random();
         int firstList = rnd.Next(1, 5);
 
-
         Color[] colors = { Color.magenta, Color.yellow, Color.green, Color.blue, Color.red };
         for(int i = 0; i <= numberOfPlayers; i++)
         {
             players.Add(new Player(colors[i], i, false, shoppingLists[(firstList+i)%5]));
         }
         players[numberOfPlayers].isPlayerAI = true; // jeden gracz SI
+
     }
 
     // Update is called once per frame
@@ -62,7 +72,7 @@ public class GameManager : MonoBehaviour {
 
     public void PutPawn(GameObject field)
     {
-        if (players[currentPlayer].pawnsInHand > 0 && phase.Equals(Phase.PawnsPlacing))
+        if (players[currentPlayer].pawnsInHand > 0 && phase == Phase.PawnsPlacing)
         {
             Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Pawn.prefab", typeof(GameObject));
             GameObject pawn = Instantiate(prefab, field.transform.position, field.transform.rotation) as GameObject;

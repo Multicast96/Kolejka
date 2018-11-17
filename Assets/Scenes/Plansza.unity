@@ -1318,7 +1318,7 @@ GameObject:
   - component: {fileID: 446643379}
   - component: {fileID: 446643378}
   m_Layer: 0
-  m_Name: Queue Manager
+  m_Name: Grocery Queue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1428,7 +1428,7 @@ GameObject:
   - component: {fileID: 457103088}
   - component: {fileID: 457103087}
   m_Layer: 0
-  m_Name: Queue Manager
+  m_Name: Electronic Queue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2502,7 +2502,7 @@ GameObject:
   - component: {fileID: 749498091}
   - component: {fileID: 749498090}
   m_Layer: 0
-  m_Name: Queue Manager
+  m_Name: Bazaar Queue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4187,7 +4187,7 @@ GameObject:
   - component: {fileID: 1298996088}
   - component: {fileID: 1298996087}
   m_Layer: 0
-  m_Name: Queue Manager
+  m_Name: Furniture Queue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4358,7 +4358,7 @@ GameObject:
   - component: {fileID: 1381854175}
   - component: {fileID: 1381854174}
   m_Layer: 0
-  m_Name: Queue Manager
+  m_Name: Clothing Queue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4755,7 +4755,7 @@ GameObject:
   - component: {fileID: 1539857180}
   - component: {fileID: 1539857183}
   m_Layer: 0
-  m_Name: Queue Manager
+  m_Name: Newsstand Queue
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
