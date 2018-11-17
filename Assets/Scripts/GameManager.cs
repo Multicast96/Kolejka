@@ -57,12 +57,12 @@ public class GameManager : MonoBehaviour {
         int firstList = rnd.Next(1, 5);
 
         Color[] colors = { Color.magenta, Color.yellow, Color.green, Color.blue, Color.red };
-        for(int i = 0; i <= numberOfPlayers; i++)
+        for(int i = 0; i < numberOfPlayers - 1; i++)
         {
-            players.Add(new Player(colors[i], i, false, shoppingLists[(firstList+i)%5]));
+            players.Add(new Player(colors[i], i, shoppingLists[(firstList+i)%5]));
         }
-        players[numberOfPlayers].isPlayerAI = true; // jeden gracz SI
-
+        int aiPlayerId = numberOfPlayers - 1; // Id gracza SI
+        players.Add(new PlayerAI(this, colors[aiPlayerId], aiPlayerId, shoppingLists[(firstList + aiPlayerId) % 5])); // jeden gracz SI
     }
 
     // Update is called once per frame
@@ -86,10 +86,7 @@ public class GameManager : MonoBehaviour {
 
     public void GetNextPlayer()
     {
-        if (currentPlayer < numberOfPlayers)
-            currentPlayer++;
-        else
-            currentPlayer = 0;
+        currentPlayer = (currentPlayer + 1) % numberOfPlayers;
     }
   
     public void EndOfTurn()
@@ -125,7 +122,6 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-        if (players[currentPlayer].isPlayerAI == true)
-            players[currentPlayer].MakeMove();
+        players[currentPlayer].MakeMove();
     }
 }
