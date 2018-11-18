@@ -73,6 +73,7 @@ public class GameManager : MonoBehaviour {
         }
         int aiPlayerId = numberOfPlayers - 1; // Id gracza SI
         players.Add(new PlayerAI(this, colors[aiPlayerId], aiPlayerId, shoppingLists[(firstList + aiPlayerId) % 5])); // jeden gracz SI
+        uiManager.UpdateShoppingList(players[currentPlayer].shoppinglist.image);
     }
 
     // Update is called once per frame
