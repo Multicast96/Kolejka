@@ -6,22 +6,20 @@ using UnityEngine.UI;
 public class ShoppingList : MonoBehaviour {
 
     public Sprite image;
-    [SerializeField] string target;
-    [SerializeField] int electronic;
-    [SerializeField] int grocery;
-    [SerializeField] int newsman;
-    [SerializeField] int cloth;
-    [SerializeField] int furniture;
+    string shoppingListName;
+    public Dictionary<GameManager.Shop, int> items;
 
-    public ShoppingList (Sprite image, string target, int electronic, int grocery, int newsman, int cloth, int furniture)
+    public ShoppingList (Sprite image, string shoppingListName, int Electronic, int Grocery, int Newsstand, int Clothing, int Furniture)
     {
         this.image = image;
-        this.target = target;
-        this.electronic = electronic;
-        this.grocery = grocery;
-        this.newsman = newsman;
-        this.cloth = cloth;
-        this.furniture = furniture;
+        this.shoppingListName = shoppingListName;
+        items =  new Dictionary<GameManager.Shop, int>() {
+            {GameManager.Shop.Electronic, Electronic},
+            {GameManager.Shop.Grocery, Grocery},
+            {GameManager.Shop.Newsstand, Newsstand},
+            {GameManager.Shop.Clothing, Clothing},
+            {GameManager.Shop.Furniture, Furniture} 
+        };
     }
 
     // Use this for initialization

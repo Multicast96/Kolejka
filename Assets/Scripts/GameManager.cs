@@ -56,12 +56,12 @@ public class GameManager : MonoBehaviour {
         queues.Add(Shop.Clothing, GameObject.Find("Clothing Queue").GetComponent<QueueManager>());
         queues.Add(Shop.Bazaar, GameObject.Find("Bazaar Queue").GetComponent<QueueManager>());
 
-        shoppingLists.Add(new ShoppingList(shoppingListImages[0], "wyposazyc kuchnie", 4, 0, 1, 2, 3));
-        shoppingLists.Add(new ShoppingList(shoppingListImages[1], "wyprawic pierwsza komunie", 3, 4, 0, 1, 2));
-        shoppingLists.Add(new ShoppingList(shoppingListImages[2], "spedzic urlop na dzialce", 2, 3, 4, 0, 1));
-        shoppingLists.Add(new ShoppingList(shoppingListImages[3], "wyslac dzieci na kolonie", 1, 2, 3, 4, 0));
-        shoppingLists.Add(new ShoppingList(shoppingListImages[4], "urzadzic mieszkanie z przydzialu", 0, 1, 2, 3, 4));
-        
+        //Electronic Grocery Newsstand Clothing Furniture
+        shoppingLists.Add(new ShoppingList(shoppingListImages[0], "wyposazyc kuchnie", Electronic: 4, Grocery: 0, Newsstand: 1, Clothing: 2, Furniture: 3));
+        shoppingLists.Add(new ShoppingList(shoppingListImages[1], "wyprawic pierwsza komunie", Electronic: 3, Grocery: 4, Newsstand: 0, Clothing: 1, Furniture: 2));
+        shoppingLists.Add(new ShoppingList(shoppingListImages[2], "spedzic urlop na dzialce", Electronic: 2, Grocery: 3, Newsstand: 4, Clothing: 0, Furniture: 1));
+        shoppingLists.Add(new ShoppingList(shoppingListImages[3], "wyslac dzieci na kolonie", Electronic: 1, Grocery: 2, Newsstand: 3, Clothing: 4, Furniture: 0));
+        shoppingLists.Add(new ShoppingList(shoppingListImages[4], "urzadzic mieszkanie z przydzialu", Electronic: 0, Grocery: 1, Newsstand: 2, Clothing: 3, Furniture: 4));        
 
         System.Random rnd = new System.Random();
         int firstList = rnd.Next(0, 5);
