@@ -28,7 +28,7 @@ public class GameManager : MonoBehaviour {
     public List<Sprite> shoppingListImages = new List<Sprite>();
     List<Player> players = new List<Player>();
     List<ShoppingList> shoppingLists = new List<ShoppingList>();
-    Dictionary<Shop, QueueManager> queues = new Dictionary<Shop, QueueManager>();
+    public Dictionary<Shop, QueueManager> queues = new Dictionary<Shop, QueueManager>();
     
 
     // Use this for initialization
@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour {
         queues.Add(Shop.Clothing, GameObject.Find("Clothing Queue").GetComponent<QueueManager>());
         queues.Add(Shop.Bazaar, GameObject.Find("Bazaar Queue").GetComponent<QueueManager>());
 
-        //Electronic Grocery Newsstand Clothing Furniture
         shoppingLists.Add(new ShoppingList(shoppingListImages[0], "wyposazyc kuchnie", Electronic: 4, Grocery: 0, Newsstand: 1, Clothing: 2, Furniture: 3));
         shoppingLists.Add(new ShoppingList(shoppingListImages[1], "wyprawic pierwsza komunie", Electronic: 3, Grocery: 4, Newsstand: 0, Clothing: 1, Furniture: 2));
         shoppingLists.Add(new ShoppingList(shoppingListImages[2], "spedzic urlop na dzialce", Electronic: 2, Grocery: 3, Newsstand: 4, Clothing: 0, Furniture: 1));
