@@ -26,8 +26,8 @@ public class FieldManager : MonoBehaviour
     {
         if (!isTaken)
         {
-            gameManager.PutPawn(gameObject);
             isTaken = true;
+            gameManager.PutPawn(gameObject);
         }
     }
 }
