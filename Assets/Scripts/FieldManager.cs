@@ -24,10 +24,24 @@ public class FieldManager : MonoBehaviour
 
     public void PutPawn()
     {
-        if (!isTaken)
+        if (!isTaken && gameManager.phase == GameManager.Phase.PawnsPlacing)
         {
             isTaken = true;
             gameManager.PutPawn(gameObject);
         }
+    }
+
+    /// <summary>
+    /// Jeśli pole nie jest zajęte to ustawia to pole jako zajęte.
+    /// </summary>
+    /// <returns>isTaken</returns>
+    public bool PutBlackPawn()
+    {
+        if (!isTaken)
+        {
+            isTaken = true;
+            return true;
+        }
+        return false;
     }
 }
