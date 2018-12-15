@@ -11,6 +11,7 @@ public class Player {
 
     public int numberOfPlayer;
     public ShoppingList shoppinglist;
+    public List<ManipulationCard> manipulationCards;
 
     public Player(Color color, int numberOfPlayer, ShoppingList shoppinglist)
     {
@@ -18,6 +19,15 @@ public class Player {
         this.pawnsInHand = maxPawns;
         this.numberOfPlayer = numberOfPlayer;
         this.shoppinglist = shoppinglist;
+
+        this.manipulationCards = new List<ManipulationCard>();
+
+        for(int i=0; i<10; i++)
+        {
+            this.manipulationCards.Add(new ManipulationCard(null, i));
+        }
+        this.manipulationCards = Shuffle(manipulationCards);
+
         GameObject playerPawns = GameObject.Find(String.Format("Player {0}", numberOfPlayer));
         for(int i = 0; i < maxPawns; i++)
         {
@@ -25,6 +35,7 @@ public class Player {
             pawn.GetComponent<Renderer>().material.color = pawnColor;
             pawns[i] = pawn;
         }
+
     }
 
     public int PutDownPawn()
@@ -46,4 +57,32 @@ public class Player {
     }
 
     public virtual void MakeMove (){}
+
+    public void PlayManipulationCard(ManipulationCard manipulationCard)
+    {
+        manipulationCard.PlayCard();
+
+        for (int i = 0; i < this.manipulationCards.Count; i++)
+        {
+            if ((int)this.manipulationCards[i].getCardName() == (int)manipulationCard.getCardName())
+                this.manipulationCards.RemoveAt(i);
+        }
+    }
+
+    public static List<T> Shuffle<T>(List<T> list)
+    {
+        System.Random rng = new System.Random();
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            T value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+        return list;
+    }
+
+
 }
