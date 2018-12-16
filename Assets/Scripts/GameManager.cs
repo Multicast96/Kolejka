@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour {
     public int turn;
     public int currentPlayer;
     public UIManager uiManager;
+    public ScoreTab scoreTab;
     Object pawnPrefab;
     GameObject pawn;
 
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour {
         phase = Phase.PawnsPlacing;
         turn = 0;
         currentPlayer = 0;
+        scoreTab.GetPlayersList(players);
 
         uiManager.UpdateDay(day);
         uiManager.UpdateWeek(week);
@@ -78,11 +80,28 @@ public class GameManager : MonoBehaviour {
         int aiPlayerId = numberOfPlayers - 1; // Id gracza SI
         players.Add(new PlayerAI(this, colors[aiPlayerId], aiPlayerId, shoppingLists[(firstList + aiPlayerId) % 5])); // jeden gracz SI
         uiManager.UpdateShoppingList(players[currentPlayer].shoppinglist.image);
+        scoreTab.GetPlayersList(players);
+        scoreTab.UpdateScoreTab();
     }
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
+        CheckIsTabKeyPressed();
+    }
 
+    private void CheckIsTabKeyPressed()
+    {
+        if (Input.GetKey(KeyCode.Tab))
+        {
+            uiManager.gameObject.SetActive(false);
+            scoreTab.gameObject.SetActive(true);
+        }
+        else
+        {
+            scoreTab.gameObject.SetActive(false);
+            uiManager.gameObject.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -152,7 +171,7 @@ public class GameManager : MonoBehaviour {
                 {
                     if (field.PutBlackPawn())
                     {
-                        GameObject pawn = Instantiate(prefab, field.transform.position, field.transform.rotation) as GameObject;
+                        pawn = Instantiate(prefab, field.transform.position, field.transform.rotation) as GameObject;
                         queue.Value.hasBlackPawn = true;
                         break;
                     }
@@ -221,4 +240,6 @@ public class GameManager : MonoBehaviour {
 
         players[currentPlayer].MakeMove();
     }
+
+
 }

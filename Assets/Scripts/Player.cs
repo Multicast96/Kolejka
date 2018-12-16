@@ -11,6 +11,7 @@ public class Player {
 
     public int numberOfPlayer;
     public ShoppingList shoppinglist;
+    public ShoppingList productsEquipment = new ShoppingList(null, "",0,0,0,0,0);
     public List<ManipulationCard> manipulationCards;
 
     public Player(Color color, int numberOfPlayer, ShoppingList shoppinglist)
@@ -84,5 +85,46 @@ public class Player {
         return list;
     }
 
-
+    public void AddItemToMyProductsEquipment(ProductCard card)
+    {
+        int value = 0;
+        switch(card.MyType)
+        {
+            case ProductCard.Type.CLOTHING:
+                Debug.Log("Podniosłem typ ciuch");
+                value = productsEquipment.items[GameManager.Shop.Clothing];
+                value++;                
+                productsEquipment.items.Remove(GameManager.Shop.Clothing);
+                productsEquipment.items.Add(GameManager.Shop.Clothing, value);
+                break;
+            case ProductCard.Type.ELECTRONICS:
+                Debug.Log("Podniosłem typ elektronika");
+                value = productsEquipment.items[GameManager.Shop.Electronic];
+                value++;
+                productsEquipment.items.Remove(GameManager.Shop.Electronic);
+                productsEquipment.items.Add(GameManager.Shop.Electronic, value);
+                break;
+            case ProductCard.Type.FURNITURE:
+                Debug.Log("Podniosłem typ mebel");
+                value = productsEquipment.items[GameManager.Shop.Furniture];
+                value++;
+                productsEquipment.items.Remove(GameManager.Shop.Furniture);
+                productsEquipment.items.Add(GameManager.Shop.Clothing, value);
+                break;
+            case ProductCard.Type.GROCERY:
+                Debug.Log("Podniosłem typ spozywczy");
+                value = productsEquipment.items[GameManager.Shop.Grocery];
+                value++;
+                productsEquipment.items.Remove(GameManager.Shop.Grocery);
+                productsEquipment.items.Add(GameManager.Shop.Grocery, value);
+                break;
+            case ProductCard.Type.NEWSSTAND:
+                Debug.Log("Podniosłem typ kiosk");
+                value = productsEquipment.items[GameManager.Shop.Newsstand];
+                value++;
+                productsEquipment.items.Remove(GameManager.Shop.Newsstand);
+                productsEquipment.items.Add(GameManager.Shop.Newsstand, value);
+                break;
+        }
+    }
 }

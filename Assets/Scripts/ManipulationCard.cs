@@ -11,7 +11,7 @@ public class ManipulationCard : MonoBehaviour {
     public ManipulationCard(Sprite image, int numberOfCard)//ManipulationCardName cardName) 
     {
         this.image = image;
-        this.cardName = (ManipulationCard.ManipulationCardName)numberOfCard;
+        this.cardName = (ManipulationCardName)numberOfCard;
     }
    
     // Nazwa Karty (0-9)
