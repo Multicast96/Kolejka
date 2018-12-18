@@ -18,6 +18,7 @@ public class PlayerAI : Player
     {
         Debug.Log(String.Format("AI player with ID: {0} makes move", numberOfPlayer));
 
+
         switch (gameManager.phase)
         {
             case GameManager.Phase.PawnsPlacing:
@@ -77,6 +78,11 @@ public class PlayerAI : Player
                 break;
             }
         }
+
+    }
+
+    private void PlacingPawnsPhase()
+    {
 
     }
 }
