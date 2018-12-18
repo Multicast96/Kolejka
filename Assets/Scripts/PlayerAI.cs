@@ -28,7 +28,7 @@ public class PlayerAI : Player
             }
         }
     }
-
+    //aa
     //Przepis na zwycięstwo w tej fazie
     // +10 za "nowy" pionek w kolejce
     // +n*5 za każdy (n) pionek który trzeba jeszcze dołożyć do tej kolejki (mamy na liście zakupów przedmiot z tego sklepu)
@@ -53,7 +53,7 @@ public class PlayerAI : Player
             else
                 thisQueueResult += 5 * (shoppinglist.items[queue.Key] - (int)pawnsInQueue[queue.Key]);
 
-            
+
             FieldManager[] children = queue.Value.gameObject.GetComponentsInChildren<FieldManager>();
             int placesTaken = 0;
             foreach (FieldManager child in children) { if (child.isTaken) placesTaken++; };
@@ -66,6 +66,7 @@ public class PlayerAI : Player
 
         foreach (var result in sortedResults)
         {
+            if (!shoppinglist.items.ContainsKey(result.Key)) continue;
             Debug.Log(String.Format("Kolejka:{0} Ilość produktów:{1} Ilość pionków:{2} Wynik:{3}", result.Key, shoppinglist.items[result.Key], pawnsInQueue[result.Key], result.Value));
         }
 
@@ -78,11 +79,6 @@ public class PlayerAI : Player
                 break;
             }
         }
-
-    }
-
-    private void PlacingPawnsPhase()
-    {
 
     }
 }
