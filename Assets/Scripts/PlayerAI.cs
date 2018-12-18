@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerAI : Player
@@ -16,45 +17,68 @@ public class PlayerAI : Player
     public override void MakeMove()
     {
         Debug.Log(String.Format("AI player with ID: {0} makes move", numberOfPlayer));
-        Debug.Log(String.Format("My shopping list is:"));
-        foreach(var listItem in shoppinglist.items)
+
+
+        switch (gameManager.phase)
         {
-            Debug.Log(listItem.Key.ToString() + ": " + listItem.Value);
-        }
-        
-        // TODO przenieść decyzję o ruchu do osobnej metody dla każdej fazy rozgrywki
-        if(gameManager.phase == GameManager.Phase.PawnsPlacing)
-        {
-            GameManager.Shop bestResultShop = 0;
-            int bestResult = 0;
-            foreach(var queue in gameManager.queues)
+            case GameManager.Phase.PawnsPlacing:
             {
-                int thisQueueResult = 0;
-                if (!shoppinglist.items.ContainsKey(queue.Key))
-                    continue;
+                PlacingPawnsPhase();
+                break;
+            }
+        }
+    }
 
-                if (!pawnsInQueue.ContainsKey(queue.Key))
-                    thisQueueResult += 10 + 5 * shoppinglist.items[queue.Key];
-                else
-                    thisQueueResult += 5 * (shoppinglist.items[queue.Key] - (int)pawnsInQueue[queue.Key]);
+    //Przepis na zwycięstwo w tej fazie
+    // +10 za "nowy" pionek w kolejce
+    // +n*5 za każdy (n) pionek który trzeba jeszcze dołożyć do tej kolejki (mamy na liście zakupów przedmiot z tego sklepu)
+    // +8-(n) za (n-te) miejsce w kolejce
+    // +15 jeśli wszyscy gracze zrobią ruch i nie będzie już można dołożyć pionka do tej kolejki. (wyrzucone)
+    private void PlacingPawnsPhase()
+    {
+        var results = new Dictionary<GameManager.Shop, int>();
+        foreach (var queue in gameManager.queues)
+        {
+            int thisQueueResult = 0;
+            if (!pawnsInQueue.Contains(queue.Key)) pawnsInQueue[queue.Key] = 0;
 
-                //TODO dodać punkty za numer miejsca w kolejce
-
-                //TODO dodać punkty za możliwość braku miejsca w kolejce w następnej rundzie
-
-                if(thisQueueResult > bestResult)
-                {
-                    bestResult = thisQueueResult;
-                    bestResultShop = queue.Key;
-                    if (!pawnsInQueue.ContainsKey(queue.Key)) pawnsInQueue[queue.Key] = 1;
-                    else pawnsInQueue[queue.Key] = (int)pawnsInQueue[queue.Key] + 1;
-                }
+            if (!shoppinglist.items.ContainsKey(queue.Key))
+            {
+                results[queue.Key] = 0;
+                continue;
             }
 
-            //TODO zapisywać wyniki wszystkich kolejek i wybierać najlepszą. Jeśli nie ma miejsca to następna kolejka.
-            //Debug.Log("Best: " + bestResultShop);
-            if (!gameManager.queues[bestResultShop].PutPawn()) throw new Exception("No place for pawn");
+            if ((int)pawnsInQueue[queue.Key] == 0)
+                thisQueueResult += 10 + 5 * shoppinglist.items[queue.Key];
+            else
+                thisQueueResult += 5 * (shoppinglist.items[queue.Key] - (int)pawnsInQueue[queue.Key]);
+
+            
+            FieldManager[] children = queue.Value.gameObject.GetComponentsInChildren<FieldManager>();
+            int placesTaken = 0;
+            foreach (FieldManager child in children) { if (child.isTaken) placesTaken++; };
+            thisQueueResult += 8 - placesTaken;
+
+            results[queue.Key] = thisQueueResult;
         }
+
+        var sortedResults = (from kv in results orderby kv.Value descending select kv).ToList();
+
+        foreach (var result in sortedResults)
+        {
+            Debug.Log(String.Format("Kolejka:{0} Ilość produktów:{1} Ilość pionków:{2} Wynik:{3}", result.Key, shoppinglist.items[result.Key], pawnsInQueue[result.Key], result.Value));
+        }
+
+        foreach (var result in sortedResults)
+        {
+            if (gameManager.queues[result.Key].PutPawn())
+            {
+                Debug.Log(String.Format("Placing in: {0}", result.Key.ToString()));
+                pawnsInQueue[result.Key] = (int)pawnsInQueue[result.Key] + 1;
+                break;
+            }
+        }
+
     }
 
     private void PlacingPawnsPhase()
