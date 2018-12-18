@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ShoppingList : MonoBehaviour {
 
     public Sprite image;
-    string shoppingListName = "";
+    string shoppingListName;
     public Dictionary<GameManager.Shop, int> items;
 
     public ShoppingList (Sprite image, string shoppingListName, int Electronic, int Grocery, int Newsstand, int Clothing, int Furniture)
