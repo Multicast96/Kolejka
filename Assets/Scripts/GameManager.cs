@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour {
     public UIManager uiManager;
     public ScoreTab scoreTab;
     public uint numberOfProductsInDeliveryTruck = 10;
+    public uint numberOfDeliveryCards = 10;
+    public float gapBetweenCardsInStack = 0.1f;
     Object pawnPrefab;
     GameObject pawn;
 
@@ -73,16 +75,29 @@ public class GameManager : MonoBehaviour {
             if (shopName == Shop.Bazaar.ToString()) continue;
             var shopDeliveryTruck = GameObject.Find(shopName + " Store Truck");
             var cardPosition = shopDeliveryTruck.transform.position;
-            var deliveryCardPrefab = Resources.Load<GameObject>("Prefabs/Cards/"+shopName+" Store Delivery Card");
+            var productCardPrefab = Resources.Load<GameObject>("Prefabs/Cards/"+shopName+" Store Delivery Card");
             for(int i = 0; i < numberOfProductsInDeliveryTruck; i++)
             {
-                var newDeliveryCard = Instantiate(deliveryCardPrefab, cardPosition, Quaternion.identity);
-                cardPosition.y += 0.1f;
+                var newDeliveryCard = Instantiate(productCardPrefab, cardPosition, Quaternion.identity);
                 newDeliveryCard.transform.parent = shopDeliveryTruck.transform;
+                cardPosition.y += gapBetweenCardsInStack;
             }
             var bazaarField = GameObject.Find(string.Format("Bazaar Card Field {0}", bazaarFieldCounter++));
-            Instantiate(deliveryCardPrefab, bazaarField.transform.position, Quaternion.identity);
+            Instantiate(productCardPrefab, bazaarField.transform.position, Quaternion.identity);
         }
+
+        // ustawienie kart dostawy na planszy
+        var deliveryCardPrefab = Resources.Load<GameObject>("Prefabs/Cards/Delivery Card");
+        var trashGameObject = GameObject.Find("Trash");
+        var targetPosition = trashGameObject.transform.position;
+        for(int i = 0; i < numberOfDeliveryCards; i++)
+        {
+            Instantiate(deliveryCardPrefab, targetPosition, Quaternion.identity, trashGameObject.transform);
+            targetPosition.y += gapBetweenCardsInStack;
+        }
+
+        MoveCardsFromTrashShufleAndCreateDeliveryStack();
+
 
 
         // Pionek przekupki na bazarze
@@ -107,6 +122,30 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         CheckIsTabKeyPressed();
+    }
+
+    private void MoveCardsFromTrashShufleAndCreateDeliveryStack()
+    {
+        var trash = GameObject.Find("Trash");
+        var allChildren = new List<Transform>();
+        foreach (Transform child in trash.transform) allChildren.Add(child);
+
+        Debug.Log(allChildren.Count);
+        allChildren.Shuffle();
+
+        var stackOfDeliveryCards = GameObject.Find("Stack of Delivery Cards");
+        float yCardPosition = stackOfDeliveryCards.transform.position.y;
+        foreach(Transform deliveryCard in allChildren)
+        {
+            Debug.Log(allChildren.Count);
+
+            deliveryCard.transform.parent = stackOfDeliveryCards.transform;
+            deliveryCard.transform.position = new Vector3(
+                stackOfDeliveryCards.transform.position.x,
+                yCardPosition,
+                stackOfDeliveryCards.transform.position.z);
+            yCardPosition += gapBetweenCardsInStack;
+        }
     }
 
     private void CheckIsTabKeyPressed()
@@ -259,6 +298,6 @@ public class GameManager : MonoBehaviour {
 
         players[currentPlayer].MakeMove();
     }
-
-
 }
+
+
