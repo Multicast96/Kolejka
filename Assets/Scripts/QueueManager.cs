@@ -5,14 +5,15 @@ using UnityEngine;
 public class QueueManager : MonoBehaviour {
 
     public GameManager gameManager;
-    bool isFull;
+    public bool isFull { get; private set; }
+    public bool hasBlackPawn { get; set; }
 
 	// Use this for initialization
 	void Start () {
         gameObject.GetComponent<Renderer>().enabled = false;
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
-     isFull = true;
-
+        isFull = false;
+        hasBlackPawn = false;
     }
 	
 	// Update is called once per frame
@@ -50,6 +51,7 @@ public class QueueManager : MonoBehaviour {
                 return true;
             }
         }
+        isFull = true;
         return false;
     }
 }
