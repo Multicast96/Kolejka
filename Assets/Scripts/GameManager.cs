@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour {
     public int currentPlayer;
     public UIManager uiManager;
     public ScoreTab scoreTab;
+    public uint numberOfProductsInDeliveryTruck = 10;
     Object pawnPrefab;
     GameObject pawn;
 
@@ -65,6 +66,24 @@ public class GameManager : MonoBehaviour {
         shoppingLists.Add(new ShoppingList(shoppingListImages[2], "spedzic urlop na dzialce", Electronic: 2, Grocery: 3, Newsstand: 4, Clothing: 0, Furniture: 1));
         shoppingLists.Add(new ShoppingList(shoppingListImages[3], "wyslac dzieci na kolonie", Electronic: 1, Grocery: 2, Newsstand: 3, Clothing: 4, Furniture: 0));
         shoppingLists.Add(new ShoppingList(shoppingListImages[4], "urzadzic mieszkanie z przydzialu", Electronic: 0, Grocery: 1, Newsstand: 2, Clothing: 3, Furniture: 4));
+
+        // Ustawienie kart towarów na samochodach
+        int bazaarFieldCounter = 1;
+        foreach(string shopName in System.Enum.GetNames(typeof(Shop))){
+            if (shopName == Shop.Bazaar.ToString()) continue;
+            var shopDeliveryTruck = GameObject.Find(shopName + " Store Truck");
+            var cardPosition = shopDeliveryTruck.transform.position;
+            var deliveryCardPrefab = Resources.Load<GameObject>("Prefabs/Cards/"+shopName+" Store Delivery Card");
+            for(int i = 0; i < numberOfProductsInDeliveryTruck; i++)
+            {
+                var newDeliveryCard = Instantiate(deliveryCardPrefab, cardPosition, Quaternion.identity);
+                cardPosition.y += 0.1f;
+                newDeliveryCard.transform.parent = shopDeliveryTruck.transform;
+            }
+            var bazaarField = GameObject.Find(string.Format("Bazaar Card Field {0}", bazaarFieldCounter++));
+            Instantiate(deliveryCardPrefab, bazaarField.transform.position, Quaternion.identity);
+        }
+
 
         // Pionek przekupki na bazarze
         vendor = GameObject.Find("Vendor");
