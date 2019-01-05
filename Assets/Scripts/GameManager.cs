@@ -98,8 +98,6 @@ public class GameManager : MonoBehaviour {
 
         MoveCardsFromTrashShufleAndCreateDeliveryStack();
 
-
-
         // Pionek przekupki na bazarze
         vendor = GameObject.Find("Vendor");
 
@@ -228,6 +226,20 @@ public class GameManager : MonoBehaviour {
                     }
                 }
             }
+        }
+    }
+
+    private void SupplyPhase()
+    {
+        var deliveryStack = GameObject.Find("Stack of Delivery Cards").GetComponent<StackManager>();
+        for (int i = 0; i < 3; i++)
+        {
+            if (deliveryStack.isEmpty()) break;
+            var deliveryField = GameObject.Find(string.Format("Delivery Cards Field {0}", i));
+            var card = deliveryStack.Pop();
+            card.GetComponent<DeliveryCard>().ShowDelivery();
+            card.transform.parent = deliveryField.transform;
+            card.transform.position = deliveryField.transform.position;
         }
     }
   
