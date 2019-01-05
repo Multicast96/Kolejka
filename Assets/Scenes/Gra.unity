@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -126,7 +126,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 4
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -227,7 +227,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 3
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -270,7 +270,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 3
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -309,6 +309,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 98285867}
+  - component: {fileID: 98285868}
   m_Layer: 0
   m_Name: Bazaar Card Field 4
   m_TagString: Untagged
@@ -330,6 +331,19 @@ Transform:
   m_Father: {fileID: 1742742834}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &98285868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 98285866}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!1001 &104320757
 Prefab:
   m_ObjectHideFlags: 0
@@ -397,6 +411,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 105784708}
+  - component: {fileID: 105784709}
   m_Layer: 0
   m_Name: Stack of Delivery Cards
   m_TagString: Untagged
@@ -418,6 +433,19 @@ Transform:
   m_Father: {fileID: 1624864292}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &105784709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 105784707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!1 &110587153
 GameObject:
   m_ObjectHideFlags: 0
@@ -625,7 +653,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 7
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -672,7 +700,7 @@ GameObject:
   m_Layer: 0
   m_Name: Vendor Field 4
   m_TagString: Untagged
-  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -783,7 +811,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 2
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -983,7 +1011,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 7
   m_TagString: Untagged
-  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1026,7 +1054,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 3
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1378,7 +1406,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 5
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1597,7 +1625,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 5
   m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1778,7 +1806,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 6
   m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1826,7 +1854,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 5
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2143,7 +2171,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 10
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2290,7 +2318,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 7
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2338,7 +2366,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 7
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2377,6 +2405,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 749473395}
+  - component: {fileID: 749473396}
   m_Layer: 0
   m_Name: Clothing Store Truck
   m_TagString: Untagged
@@ -2398,6 +2427,19 @@ Transform:
   m_Father: {fileID: 1486760310}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &749473396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 749473394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!1 &762640971
 GameObject:
   m_ObjectHideFlags: 0
@@ -2443,7 +2485,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 1
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2664,7 +2706,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 4
   m_TagString: Untagged
-  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2707,7 +2749,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 2
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2749,7 +2791,7 @@ GameObject:
   m_Layer: 0
   m_Name: Vendor Field 1
   m_TagString: Untagged
-  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2823,6 +2865,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 872363280}
+  - component: {fileID: 872363281}
   m_Layer: 0
   m_Name: Grocery Store Truck
   m_TagString: Untagged
@@ -2844,6 +2887,19 @@ Transform:
   m_Father: {fileID: 1486760310}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &872363281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 872363279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!1 &878804142
 GameObject:
   m_ObjectHideFlags: 0
@@ -2933,7 +2989,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 7
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2976,7 +3032,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 2
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3019,7 +3075,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 5
   m_TagString: Untagged
-  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3171,7 +3227,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 1
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3415,7 +3471,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 6
   m_TagString: Untagged
-  m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3454,6 +3510,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1044528086}
+  - component: {fileID: 1044528087}
   m_Layer: 0
   m_Name: Bazaar Card Field 3
   m_TagString: Untagged
@@ -3475,6 +3532,19 @@ Transform:
   m_Father: {fileID: 1742742834}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1044528087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1044528085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!1 &1059772695
 GameObject:
   m_ObjectHideFlags: 0
@@ -3484,6 +3554,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1059772696}
+  - component: {fileID: 1059772697}
   m_Layer: 0
   m_Name: Bazaar Card Field 1
   m_TagString: Untagged
@@ -3505,6 +3576,19 @@ Transform:
   m_Father: {fileID: 1742742834}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1059772697
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1059772695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!1 &1068458339
 GameObject:
   m_ObjectHideFlags: 0
@@ -3518,7 +3602,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 1
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3561,7 +3645,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 2
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3719,7 +3803,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 6
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3762,7 +3846,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 4
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3851,7 +3935,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 6
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -3952,7 +4036,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 2
   m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4161,7 +4245,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 1
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4300,7 +4384,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 11
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4339,6 +4423,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1296423558}
+  - component: {fileID: 1296423559}
   m_Layer: 0
   m_Name: Bazaar Card Field 2
   m_TagString: Untagged
@@ -4360,6 +4445,19 @@ Transform:
   m_Father: {fileID: 1742742834}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1296423559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1296423557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!1 &1311484332
 GameObject:
   m_ObjectHideFlags: 0
@@ -4542,7 +4640,7 @@ GameObject:
   m_Layer: 0
   m_Name: Vendor Field 3
   m_TagString: Untagged
-  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4573,7 +4671,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 9
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4690,6 +4788,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1365922470}
+  - component: {fileID: 1365922471}
   m_Layer: 0
   m_Name: Furniture Store Truck
   m_TagString: Untagged
@@ -4711,6 +4810,19 @@ Transform:
   m_Father: {fileID: 1486760310}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1365922471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1365922469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!4 &1377881589 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4551710549865996, guid: 49fdb3a42e2bc01479a34d93a1f06698,
@@ -4729,7 +4841,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 1
   m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4772,7 +4884,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 3
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4815,7 +4927,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 1
   m_TagString: Untagged
-  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -4890,7 +5002,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 5
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5097,6 +5209,8 @@ MonoBehaviour:
   currentPlayer: 0
   uiManager: {fileID: 1092478006}
   scoreTab: {fileID: 1944727102}
+  numberOfProductsInDeliveryTruck: 20
+  numberOfDeliveryCards: 10
   markedPlayer: 0
   numberOfTurns: 0
   numberOfPlayers: 0
@@ -5119,7 +5233,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 4
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5255,10 +5369,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1533192122}
+  - component: {fileID: 1533192123}
   m_Layer: 0
   m_Name: Trash
   m_TagString: Untagged
-  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5276,6 +5391,19 @@ Transform:
   m_Father: {fileID: 429687608}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1533192123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1533192121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!1 &1539202338
 GameObject:
   m_ObjectHideFlags: 0
@@ -5289,7 +5417,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 2
   m_TagString: Untagged
-  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5332,7 +5460,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 5
   m_TagString: Untagged
-  m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5486,7 +5614,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 6
   m_TagString: Untagged
-  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5534,7 +5662,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 6
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5573,8 +5701,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1722880422}
+  - component: {fileID: 1722880425}
   m_Layer: 0
-  m_Name: Newsstand Truck
+  m_Name: Newsstand Store Truck
   m_TagString: Untagged
   m_Icon: {fileID: 419385456094870383, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -5583,8 +5712,7 @@ GameObject:
 --- !u!4 &1722880422
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 4801354905749842, guid: 71409f468a42f7845b654c14aa59c67e,
-    type: 2}
+  m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1722880421}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -5594,6 +5722,19 @@ Transform:
   m_Father: {fileID: 1486760310}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1722880425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1722880421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!1 &1729320215
 GameObject:
   m_ObjectHideFlags: 0
@@ -5706,7 +5847,7 @@ GameObject:
   m_Layer: 0
   m_Name: Vendor Field 2
   m_TagString: Untagged
-  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5919,6 +6060,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1910534078}
+  - component: {fileID: 1910534079}
   m_Layer: 0
   m_Name: Bazaar Card Field 5
   m_TagString: Untagged
@@ -5940,6 +6082,19 @@ Transform:
   m_Father: {fileID: 1742742834}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1910534079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1910534077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
 --- !u!1 &1915854929
 GameObject:
   m_ObjectHideFlags: 0
@@ -5953,7 +6108,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 3
   m_TagString: Untagged
-  m_Icon: {fileID: 7422848464349959988, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5996,7 +6151,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 4
   m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6123,6 +6278,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1255269726832110, guid: 2ac86da13d4a37743b5e7210b23a0e55, type: 2}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000,
+        type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ac86da13d4a37743b5e7210b23a0e55, type: 2}
   m_IsPrefabAsset: 0
@@ -6315,7 +6475,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 4
   m_TagString: Untagged
-  m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6424,7 +6584,7 @@ GameObject:
   m_Layer: 0
   m_Name: Vendor Field 5
   m_TagString: Untagged
-  m_Icon: {fileID: 7250588514170254948, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6455,7 +6615,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 8
   m_TagString: Untagged
-  m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6498,7 +6658,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 7
   m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6813,7 +6973,7 @@ GameObject:
   m_Layer: 0
   m_Name: Field 3
   m_TagString: Untagged
-  m_Icon: {fileID: 7148428337604731935, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6852,6 +7012,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2146975012}
+  - component: {fileID: 2146975013}
   m_Layer: 0
   m_Name: Electronic Store Truck
   m_TagString: Untagged
@@ -6873,3 +7034,16 @@ Transform:
   m_Father: {fileID: 1486760310}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2146975013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2146975011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8b0d0a33c7fe6240bb1d1e044bbc0ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textMeshGameObject: {fileID: 0}
+  gapBetweenObjectsInStack: 0.1
