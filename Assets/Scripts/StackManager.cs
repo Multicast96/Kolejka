@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class StackManager : MonoBehaviour {
-    private Stack<GameObject> stack;
+    private Stack<GameObject> stack = new Stack<GameObject>();
     private float stackHeight = 0;
     private GameManager stackCount;
     public GameObject textMeshGameObject;
@@ -13,7 +13,6 @@ public class StackManager : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        stack = new Stack<GameObject>();
         textMeshGameObject = new GameObject();
         textMeshGameObject.name = "stack";
         textMeshGameObject.transform.parent = transform;

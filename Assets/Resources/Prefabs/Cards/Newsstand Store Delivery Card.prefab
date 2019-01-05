@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23906382113630618}
   - component: {fileID: 65222864838095086}
   m_Layer: 0
-  m_Name: Newsstand Delivery Card 1
+  m_Name: Newsstand Store Delivery Card
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
