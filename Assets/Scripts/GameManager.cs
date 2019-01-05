@@ -19,9 +19,8 @@ public class GameManager : MonoBehaviour {
     public int currentPlayer;
     public UIManager uiManager;
     public ScoreTab scoreTab;
-    public uint numberOfProductsInDeliveryTruck = 10;
+    public uint numberOfProductsInDeliveryTruck = 20;
     public uint numberOfDeliveryCards = 10;
-    public float gapBetweenCardsInStack = 0.1f;
     Object pawnPrefab;
     GameObject pawn;
 
@@ -73,27 +72,28 @@ public class GameManager : MonoBehaviour {
         int bazaarFieldCounter = 1;
         foreach(string shopName in System.Enum.GetNames(typeof(Shop))){
             if (shopName == Shop.Bazaar.ToString()) continue;
-            var shopDeliveryTruck = GameObject.Find(shopName + " Store Truck");
-            var cardPosition = shopDeliveryTruck.transform.position;
+
+            var shopDeliveryTruck = GameObject.Find(shopName + " Store Truck").GetComponent<StackManager>();
+            shopDeliveryTruck.gapBetweenObjectsInStack = 0.05f;
             var productCardPrefab = Resources.Load<GameObject>("Prefabs/Cards/"+shopName+" Store Delivery Card");
             for(int i = 0; i < numberOfProductsInDeliveryTruck; i++)
             {
-                var newDeliveryCard = Instantiate(productCardPrefab, cardPosition, Quaternion.identity);
-                newDeliveryCard.transform.parent = shopDeliveryTruck.transform;
-                cardPosition.y += gapBetweenCardsInStack;
+                var newDeliveryCard = Instantiate(productCardPrefab, Vector3.up, Quaternion.identity);
+                shopDeliveryTruck.Push(newDeliveryCard);
             }
-            var bazaarField = GameObject.Find(string.Format("Bazaar Card Field {0}", bazaarFieldCounter++));
-            Instantiate(productCardPrefab, bazaarField.transform.position, Quaternion.identity);
+            var bazaarField = GameObject.Find(string.Format("Bazaar Card Field {0}", bazaarFieldCounter++)).GetComponent<StackManager>();
+            var baazarDeliveryCard = Instantiate(productCardPrefab, Vector3.up, Quaternion.identity);
+            bazaarField.Push(baazarDeliveryCard);
         }
 
         // ustawienie kart dostawy na planszy
         var deliveryCardPrefab = Resources.Load<GameObject>("Prefabs/Cards/Delivery Card");
-        var trashGameObject = GameObject.Find("Trash");
+        var trashGameObject = GameObject.Find("Trash").GetComponent<StackManager>();
         var targetPosition = trashGameObject.transform.position;
         for(int i = 0; i < numberOfDeliveryCards; i++)
         {
-            Instantiate(deliveryCardPrefab, targetPosition, Quaternion.identity, trashGameObject.transform);
-            targetPosition.y += gapBetweenCardsInStack;
+            var newCard = Instantiate(deliveryCardPrefab, Vector3.up, Quaternion.identity);
+            trashGameObject.Push(newCard);
         }
 
         MoveCardsFromTrashShufleAndCreateDeliveryStack();
@@ -126,25 +126,18 @@ public class GameManager : MonoBehaviour {
 
     private void MoveCardsFromTrashShufleAndCreateDeliveryStack()
     {
-        var trash = GameObject.Find("Trash");
+        var trash = GameObject.Find("Trash").GetComponent<StackManager>();
         var allChildren = new List<Transform>();
-        foreach (Transform child in trash.transform) allChildren.Add(child);
-
-        Debug.Log(allChildren.Count);
+        while (!trash.isEmpty())
+        {
+            allChildren.Add(trash.Pop().transform);
+        }
         allChildren.Shuffle();
 
-        var stackOfDeliveryCards = GameObject.Find("Stack of Delivery Cards");
-        float yCardPosition = stackOfDeliveryCards.transform.position.y;
+        var stackOfDeliveryCards = GameObject.Find("Stack of Delivery Cards").GetComponent<StackManager>();
         foreach(Transform deliveryCard in allChildren)
         {
-            Debug.Log(allChildren.Count);
-
-            deliveryCard.transform.parent = stackOfDeliveryCards.transform;
-            deliveryCard.transform.position = new Vector3(
-                stackOfDeliveryCards.transform.position.x,
-                yCardPosition,
-                stackOfDeliveryCards.transform.position.z);
-            yCardPosition += gapBetweenCardsInStack;
+            stackOfDeliveryCards.Push(deliveryCard.gameObject);
         }
     }
 
