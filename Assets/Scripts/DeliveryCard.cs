@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DeliveryCard : MonoBehaviour {
-    public GameManager.Shop shop { get; private set; }
-    public int productsToBeDelivered { get; private set; }
+    private GameManager.Shop shop;
+    private int productsToBeDelivered;
 
     public void ShowDelivery()
     {

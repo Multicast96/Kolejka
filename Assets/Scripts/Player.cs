@@ -12,9 +12,14 @@ public class Player {
     public int numberOfPlayer;
     public ShoppingList shoppinglist;
     public ShoppingList productsEquipment = new ShoppingList(null, "",0,0,0,0,0);
-    public List<ManipulationCard> manipulationCards;
 
-    public Player(Color color, int numberOfPlayer, ShoppingList shoppinglist)
+    public List<ManipulationCard> manipulationCards = new List<ManipulationCard>();    //wszystkie karty manipulacji
+    public List<ManipulationCard> avlManipulationCards = new List<ManipulationCard>(); //dostępne karty (max. 3)
+    public List<Sprite> myManipulationCardsImages = new List<Sprite>();
+    public bool fold = false;
+
+
+    public Player(Color color, int numberOfPlayer, ShoppingList shoppinglist, List<Sprite> myManipulationCardsImages)
     {
         this.pawnColor = color;
         this.pawnsInHand = maxPawns;
@@ -23,21 +28,15 @@ public class Player {
 
         this.manipulationCards = new List<ManipulationCard>();
 
-        for(int i=0; i<10; i++)
-        {
-            this.manipulationCards.Add(new ManipulationCard(null, i));
-        }
-        this.manipulationCards = Shuffle(manipulationCards);
-
         GameObject playerPawns = GameObject.Find(String.Format("Player {0}", numberOfPlayer));
         for(int i = 0; i < maxPawns; i++)
         {
             GameObject pawn = playerPawns.transform.Find(String.Format("Pawn {0}", i)).gameObject;
             pawn.GetComponent<Renderer>().material.color = pawnColor;
             pawns[i] = pawn;
-            var pawnManager = pawn.GetComponent<PawnManager>();
-            pawnManager.player = this;
         }
+
+        this.myManipulationCardsImages = myManipulationCardsImages;
 
     }
 
@@ -63,13 +62,51 @@ public class Player {
 
     public void PlayManipulationCard(ManipulationCard manipulationCard)
     {
-        manipulationCard.PlayCard();
+        //manipulationCard.PlayCard();
 
-        for (int i = 0; i < this.manipulationCards.Count; i++)
+        for (int i = 0; i < this.manipulationCards.Count; i++)  //usuwanie karty z listy
         {
             if ((int)this.manipulationCards[i].getCardName() == (int)manipulationCard.getCardName())
                 this.manipulationCards.RemoveAt(i);
         }
+
+        for (int i = 0; i < this.avlManipulationCards.Count; i++)   //usuwanie karty z dostępnej trójki
+        {
+            if ((int)this.avlManipulationCards[i].getCardName() == (int)manipulationCard.getCardName())
+                this.avlManipulationCards.RemoveAt(i);
+        }
+    }
+
+    public void SetManipulationCards()
+    {
+        this.manipulationCards.Clear();
+
+        for (int i = 0; i < 10; i++)
+        {
+            this.manipulationCards.Add(new ManipulationCard(myManipulationCardsImages[i], i));
+        }
+        this.manipulationCards = Shuffle(manipulationCards);
+    }
+
+    public void SetAvlManipulationCards()
+    {
+        this.avlManipulationCards.Clear();
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (i < this.manipulationCards.Count)
+                this.avlManipulationCards.Add(this.manipulationCards[i]);
+        }
+    }
+
+    public void ToFold()
+    {
+        this.fold = true;
+    }
+
+    public void UnFold()
+    {
+        this.fold = false;
     }
 
     public static List<T> Shuffle<T>(List<T> list)
@@ -87,29 +124,45 @@ public class Player {
         return list;
     }
 
-    public void AddItemToMyProductsEquipment(GameManager.Shop shop)
+    public void AddItemToMyProductsEquipment(ProductCard card)
     {
-        switch(shop)
+        int value = 0;
+        switch(card.MyType)
         {
-            case GameManager.Shop.Clothing:
-                productsEquipment.items[GameManager.Shop.Clothing] += 1;
-                Debug.Log(string.Format("Podniosłem typ ciuch, mam teraz: {0}", productsEquipment.items[GameManager.Shop.Clothing]));
+            case ProductCard.Type.CLOTHING:
+                Debug.Log("Podniosłem typ ciuch");
+                value = productsEquipment.items[GameManager.Shop.Clothing];
+                value++;                
+                productsEquipment.items.Remove(GameManager.Shop.Clothing);
+                productsEquipment.items.Add(GameManager.Shop.Clothing, value);
                 break;
-            case GameManager.Shop.Electronic:
-                productsEquipment.items[GameManager.Shop.Electronic] += 1;
-                Debug.Log(string.Format("Podniosłem typ elektronika, mam teraz: {0}", productsEquipment.items[GameManager.Shop.Electronic]));
+            case ProductCard.Type.ELECTRONICS:
+                Debug.Log("Podniosłem typ elektronika");
+                value = productsEquipment.items[GameManager.Shop.Electronic];
+                value++;
+                productsEquipment.items.Remove(GameManager.Shop.Electronic);
+                productsEquipment.items.Add(GameManager.Shop.Electronic, value);
                 break;
-            case GameManager.Shop.Furniture:
-                productsEquipment.items[GameManager.Shop.Furniture] += 1;
-                Debug.Log(string.Format("Podniosłem typ mebel, mam teraz: {0}", productsEquipment.items[GameManager.Shop.Furniture]));
+            case ProductCard.Type.FURNITURE:
+                Debug.Log("Podniosłem typ mebel");
+                value = productsEquipment.items[GameManager.Shop.Furniture];
+                value++;
+                productsEquipment.items.Remove(GameManager.Shop.Furniture);
+                productsEquipment.items.Add(GameManager.Shop.Clothing, value);
                 break;
-            case GameManager.Shop.Grocery:
-                productsEquipment.items[GameManager.Shop.Grocery] += 1;
-                Debug.Log(string.Format("Podniosłem typ spozywczy, mam teraz: {0}", productsEquipment.items[GameManager.Shop.Grocery]));
+            case ProductCard.Type.GROCERY:
+                Debug.Log("Podniosłem typ spozywczy");
+                value = productsEquipment.items[GameManager.Shop.Grocery];
+                value++;
+                productsEquipment.items.Remove(GameManager.Shop.Grocery);
+                productsEquipment.items.Add(GameManager.Shop.Grocery, value);
                 break;
-            case GameManager.Shop.Newsstand:
-                productsEquipment.items[GameManager.Shop.Newsstand] += 1;
-                Debug.Log(string.Format("Podniosłem typ kiosk, mam teraz: {0}", productsEquipment.items[GameManager.Shop.Newsstand]));
+            case ProductCard.Type.NEWSSTAND:
+                Debug.Log("Podniosłem typ kiosk");
+                value = productsEquipment.items[GameManager.Shop.Newsstand];
+                value++;
+                productsEquipment.items.Remove(GameManager.Shop.Newsstand);
+                productsEquipment.items.Add(GameManager.Shop.Newsstand, value);
                 break;
         }
     }
