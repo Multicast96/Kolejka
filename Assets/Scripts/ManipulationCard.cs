@@ -5,7 +5,7 @@ using UnityEngine;
 public class ManipulationCard : MonoBehaviour {
 
     private Sprite image;
-    public enum ManipulationCardName { PanTuNieStal, MatkaZDzieckiem, PomylkaWDostawie, SzczesliwyTraf, ListaSpoleczna, KrytykaWladzy, TowarSpodLady, KolegaWKomitecie, Remanent, ZwiekszonaDostawa};
+    public enum ManipulationCardName { KolegaWKomitecie, KrytykaWladzy, ListaSpoleczna, MatkaZDzieckiem, PanTuNieStal, PomylkaWDostawie, Remanent, SzczesliwyTraf, TowarSpodLady, ZwiekszonaDostawa};
     private ManipulationCardName cardName;
 
     public ManipulationCard(Sprite image, int numberOfCard)//ManipulationCardName cardName) 
@@ -26,53 +26,24 @@ public class ManipulationCard : MonoBehaviour {
         return image;
     }
 
+
     // Zagranie danej karty
-    public void PlayCard() 
+    public void PlayCard()
     {
-        if(cardName == ManipulationCardName.PanTuNieStal)
+        if (cardName == ManipulationCardName.KolegaWKomitecie)
         {
-
+            
         }
-        else if (cardName == ManipulationCardName.PanTuNieStal)
+        else
         {
-
+            //wyświetlenie na 5 sekund 2 następnych kart dostaw
+           // GameManager.EndOfTurn();
         }
-        else if (cardName == ManipulationCardName.PomylkaWDostawie)
-        {
 
-        }
-        else if (cardName == ManipulationCardName.SzczesliwyTraf)
-        {
-
-        }
-        else if (cardName == ManipulationCardName.ListaSpoleczna)
-        {
-
-        }
-        else if (cardName == ManipulationCardName.KrytykaWladzy)
-        {
-
-        }
-        else if (cardName == ManipulationCardName.TowarSpodLady)
-        {
-
-        }
-        else if (cardName == ManipulationCardName.KolegaWKomitecie)
-        {
-
-        }
-        else if (cardName == ManipulationCardName.Remanent)
-        {
-
-        }
-        else if (cardName == ManipulationCardName.ZwiekszonaDostawa)
-        {
-
-        }
     }
-
-    // Use this for initialization
-    void Start () {
+    
+        // Use this for initialization
+        void Start () {
 		
 	}
 	
