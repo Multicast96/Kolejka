@@ -12,9 +12,14 @@ public class Player {
     public int numberOfPlayer;
     public ShoppingList shoppinglist;
     public ShoppingList productsEquipment = new ShoppingList(null, "",0,0,0,0,0);
-    public List<ManipulationCard> manipulationCards;
 
-    public Player(Color color, int numberOfPlayer, ShoppingList shoppinglist)
+    public List<ManipulationCard> manipulationCards = new List<ManipulationCard>();    //wszystkie karty manipulacji
+    public List<ManipulationCard> avlManipulationCards = new List<ManipulationCard>(); //dostępne karty (max. 3)
+    public List<Sprite> myManipulationCardsImages = new List<Sprite>();
+    public bool fold = false;
+
+
+    public Player(Color color, int numberOfPlayer, ShoppingList shoppinglist, List<Sprite> myManipulationCardsImages)
     {
         this.pawnColor = color;
         this.pawnsInHand = maxPawns;
@@ -22,12 +27,6 @@ public class Player {
         this.shoppinglist = shoppinglist;
 
         this.manipulationCards = new List<ManipulationCard>();
-
-        for(int i=0; i<10; i++)
-        {
-            this.manipulationCards.Add(new ManipulationCard(null, i));
-        }
-        this.manipulationCards = Shuffle(manipulationCards);
 
         GameObject playerPawns = GameObject.Find(String.Format("Player {0}", numberOfPlayer));
         for(int i = 0; i < maxPawns; i++)
@@ -38,6 +37,8 @@ public class Player {
             var pawnManager = pawn.GetComponent<PawnManager>();
             pawnManager.player = this;
         }
+
+        this.myManipulationCardsImages = myManipulationCardsImages;
 
     }
 
@@ -63,13 +64,51 @@ public class Player {
 
     public void PlayManipulationCard(ManipulationCard manipulationCard)
     {
-        manipulationCard.PlayCard();
+        //manipulationCard.PlayCard();
 
-        for (int i = 0; i < this.manipulationCards.Count; i++)
+        for (int i = 0; i < this.manipulationCards.Count; i++)  //usuwanie karty z listy
         {
             if ((int)this.manipulationCards[i].getCardName() == (int)manipulationCard.getCardName())
                 this.manipulationCards.RemoveAt(i);
         }
+
+        for (int i = 0; i < this.avlManipulationCards.Count; i++)   //usuwanie karty z dostępnej trójki
+        {
+            if ((int)this.avlManipulationCards[i].getCardName() == (int)manipulationCard.getCardName())
+                this.avlManipulationCards.RemoveAt(i);
+        }
+    }
+
+    public void SetManipulationCards()
+    {
+        this.manipulationCards.Clear();
+
+        for (int i = 0; i < 10; i++)
+        {
+            this.manipulationCards.Add(new ManipulationCard(myManipulationCardsImages[i], i));
+        }
+        this.manipulationCards = Shuffle(manipulationCards);
+    }
+
+    public void SetAvlManipulationCards()
+    {
+        this.avlManipulationCards.Clear();
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (i < this.manipulationCards.Count)
+                this.avlManipulationCards.Add(this.manipulationCards[i]);
+        }
+    }
+
+    public void ToFold()
+    {
+        this.fold = true;
+    }
+
+    public void UnFold()
+    {
+        this.fold = false;
     }
 
     public static List<T> Shuffle<T>(List<T> list)

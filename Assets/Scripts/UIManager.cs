@@ -11,6 +11,10 @@ public class UIManager : MonoBehaviour {
     public Text phaseText;
     public Image shoppingList;
 
+    public Image manipulationCard_1;
+    public Image manipulationCard_2;
+    public Image manipulationCard_3;
+
     // Use this for initialization
     void Start () {
     }
@@ -43,5 +47,32 @@ public class UIManager : MonoBehaviour {
     public void UpdateShoppingList(Sprite image)
     {
         shoppingList.sprite = image;
+    }
+
+    public void UpdateManipulationCards(Sprite image1, Sprite image2, Sprite image3)
+    {
+        //if(image1 == null)
+        //{
+        //    Color color = new Color(1f, 1f, 1f, 0f);
+        //    manipulationCard_1.sprite = image1;
+        //    manipulationCard_1.sprite.
+
+        //}
+        //else
+        manipulationCard_1.sprite = image1;
+        manipulationCard_2.sprite = image2;
+        manipulationCard_3.sprite = image3;
+    }
+
+    public void SelectCard(GameObject ob)
+    {   
+        //var colors = ob.GetComponent<Button>().colors;
+        //colors.highlightedColor = new Color(255, 100, 100);
+        //colors.highlightedColor = new ColorBlock();
+        //ob.GetComponent<Button>().colors = colors;
+        ColorBlock colorVar = ob.GetComponent<Button>().colors;
+        colorVar.highlightedColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+        ob.GetComponent<Button>().colors = colorVar;
+
     }
 }

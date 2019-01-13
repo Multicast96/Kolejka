@@ -34,7 +34,10 @@ public class QueueManager : MonoBehaviour {
 
     private void OnMouseDown()
     {
-        PutPawn();
+        if (gameManager.phase == GameManager.Phase.PawnsPlacing)
+            PutPawn();
+        else if (gameManager.phase == GameManager.Phase.Manipulations)
+            gameManager.SelectQueue(gameObject.GetComponent<QueueManager>().name);
     }
 
     public bool PutPawn()

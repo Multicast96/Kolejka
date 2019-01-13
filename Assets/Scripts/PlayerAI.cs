@@ -8,8 +8,8 @@ public class PlayerAI : Player
 {
     private GameManager gameManager;
     private Hashtable pawnsInQueue = new Hashtable();
-    public PlayerAI(GameManager gameManager, Color color, int numberOfPlayer, ShoppingList shoppinglist) : 
-        base(color, numberOfPlayer, shoppinglist)
+    public PlayerAI(GameManager gameManager, Color color, int numberOfPlayer, ShoppingList shoppinglist, List<Sprite> myManipulationCardsImages) : 
+        base(color, numberOfPlayer, shoppinglist, myManipulationCardsImages)
     {
         this.gameManager = gameManager;
     }
