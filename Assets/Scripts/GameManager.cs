@@ -21,9 +21,6 @@ public class GameManager : MonoBehaviour {
     public uint numberOfProductsInDeliveryTruck = 20;
     public uint numberOfDeliveryCards = 10;
     Object pawnPrefab;
-  
-    GameObject pawn;
-    public GameObject[] blackPawns = new GameObject[5];
 
     // gracz zaczynajacy dzien
     public int markedPlayer;
@@ -35,27 +32,8 @@ public class GameManager : MonoBehaviour {
     List<Player> players = new List<Player>();
     List<ShoppingList> shoppingLists = new List<ShoppingList>();
     public Dictionary<Shop, QueueManager> queues = new Dictionary<Shop, QueueManager>();
-
-    public List<Sprite> manipulationGreenCardsImages = new List<Sprite>();
-    public List<Sprite> manipulationRedCardsImages = new List<Sprite>();
-    public List<Sprite> manipulationBlueCardsImages = new List<Sprite>();
-    public List<Sprite> manipulationBrownCardsImages = new List<Sprite>();
-    public List<Sprite> manipulationYellowCardsImages = new List<Sprite>();
-    public Dictionary<int, List<Sprite>> manipulationCardsImages = new Dictionary<int, List<Sprite>>();
-
-    //public Dictionary<int, List<GameObject>> pawnsInQueue = new Dictionary<int, List<GameObject>>();
-    public Dictionary<int, List<int[]>> pawnOwners = new Dictionary<int, List<int[]>>();
-    public Dictionary<int, List<GameObject>> fieldsDictionary = new Dictionary<int, List<GameObject>>();
-    //public Dictionary<int, List<int>> pawnNumbers = new Dictionary<int, List<int>>();
-
-    public ManipulationCard selectedManipulationCard;
-    public ManipulationCard playedManipulationCard;
-    public int[] selectedPawn = new int[2];
-    public bool isPawnSelected = false;
-
     public Dictionary<Shop, StackManager> products = new Dictionary<Shop, StackManager>();
     public Dictionary<Shop, string> shopLiteral = new Dictionary<Shop, string>();
-
     
 
     // Use this for initialization
@@ -109,23 +87,7 @@ public class GameManager : MonoBehaviour {
         shoppingLists.Add(new ShoppingList(shoppingListImages[3], "wyslac dzieci na kolonie", Electronic: 1, Grocery: 2, Newsstand: 3, Clothing: 4, Furniture: 0));
         shoppingLists.Add(new ShoppingList(shoppingListImages[4], "urzadzic mieszkanie z przydzialu", Electronic: 0, Grocery: 1, Newsstand: 2, Clothing: 3, Furniture: 4));
 
-        manipulationCardsImages.Add(0, manipulationBlueCardsImages);
-        manipulationCardsImages.Add(1, manipulationRedCardsImages);
-        manipulationCardsImages.Add(2, manipulationGreenCardsImages);
-        manipulationCardsImages.Add(3, manipulationBrownCardsImages);
-        manipulationCardsImages.Add(4, manipulationYellowCardsImages);
-
-
-        for (int i = 0; i < 6; i++)
-        {
-            pawnOwners[i] = new List<int[]>();
-            fieldsDictionary[i] = new List<GameObject>();
-        }
-            //pawnsInQueue[i] = new List<GameObject>();
-
-
-
-            // Ustawienie kart towarów na samochodach
+        // Ustawienie kart towarów na samochodach
         int bazaarFieldCounter = 1;
         foreach(string shopName in System.Enum.GetNames(typeof(Shop))){
             if (shopName == Shop.Bazaar.ToString()) continue;
@@ -164,12 +126,11 @@ public class GameManager : MonoBehaviour {
         Color[] colors = { Color.magenta, Color.yellow, Color.green, Color.blue, Color.red };
         for(int i = 0; i < numberOfPlayers - 1; i++)
         {
-            players.Add(new Player(colors[i], i, shoppingLists[(firstList+i)%5], manipulationCardsImages[i]));
+            players.Add(new Player(colors[i], i, shoppingLists[(firstList+i)%5]));
         }
         int aiPlayerId = numberOfPlayers - 1; // Id gracza SI
-        players.Add(new PlayerAI(this, colors[aiPlayerId], aiPlayerId, shoppingLists[(firstList + aiPlayerId) % 5], manipulationCardsImages[aiPlayerId])); // jeden gracz SI
+        players.Add(new PlayerAI(this, colors[aiPlayerId], aiPlayerId, shoppingLists[(firstList + aiPlayerId) % 5])); // jeden gracz SI
         uiManager.UpdateShoppingList(players[currentPlayer].shoppinglist.image);
-        
         scoreTab.GetPlayersList(players);
         scoreTab.UpdateScoreTab();
     }
@@ -224,28 +185,6 @@ public class GameManager : MonoBehaviour {
             GameObject pawn = players[currentPlayer].pawns[pawnNumber].gameObject;
             players[currentPlayer].PutDownPawn();
             MovePawn(pawn, field);
-
-            int tmpQue;
-            QueueManager myQueue = field.transform.parent.GetComponent<QueueManager>();
-            
-            if(myQueue.name == "Newsstand Queue")
-                tmpQue = 0;
-            else if (myQueue.name == "Grocery Queue")
-                tmpQue = 1;
-            else if (myQueue.name == "Electronic Queue")
-                tmpQue = 2;
-            else if (myQueue.name == "Furniture Queue")
-                tmpQue = 3;
-            else if (myQueue.name == "Clothing Queue")
-                tmpQue = 4;
-            else //if(myQueue.name == "Bazaar Queue")
-                tmpQue = 5;
-
-            int[] tmpOwner = new int[2];
-            tmpOwner[0] = currentPlayer;
-            tmpOwner[1] = pawnNumber;
-            pawnOwners[tmpQue].Add(tmpOwner);
-            fieldsDictionary[tmpQue].Add(field);
         }
 
         this.EndOfTurn();
@@ -301,32 +240,9 @@ public class GameManager : MonoBehaviour {
                 {
                     if (field.PutBlackPawn())
                     {
-                        int tmpQue;
-                        QueueManager myQueue = field.transform.parent.GetComponent<QueueManager>();
-
-                        if (myQueue.name == "Newsstand Queue")
-                            tmpQue = 0;
-                        else if (myQueue.name == "Grocery Queue")
-                            tmpQue = 1;
-                        else if (myQueue.name == "Electronic Queue")
-                            tmpQue = 2;
-                        else if (myQueue.name == "Furniture Queue")
-                            tmpQue = 3;
-                        else if (myQueue.name == "Clothing Queue")
-                            tmpQue = 4;
-                        else
-                            tmpQue = 5;
-
-                        pawn = Instantiate(prefab, field.transform.position, field.transform.rotation) as GameObject;
+                        pawn.transform.SetPositionAndRotation(field.transform.position, field.transform.rotation);
+                        pawn.transform.SetParent(field.transform);
                         queue.Value.hasBlackPawn = true;
-
-                        blackPawns[tmpQue] = pawn;
-                        int[] tmpOwner = new int[2];
-                        tmpOwner[0] = 9;
-                        tmpOwner[1] = tmpQue;
-                        pawnOwners[tmpQue].Add(tmpOwner);
-                        fieldsDictionary[tmpQue].Add(field.gameObject);
-
                         break;
                     }
                 }
@@ -377,89 +293,7 @@ public class GameManager : MonoBehaviour {
             }
         }
     }
-
-    public void SelectManipulationCard(int number)
-    {
-        selectedManipulationCard = players[currentPlayer].avlManipulationCards[number];
-
-        if(players[currentPlayer].avlManipulationCards[number].getCardName() == ManipulationCard.ManipulationCardName.KolegaWKomitecie)
-        {
-            players[currentPlayer].avlManipulationCards[number].PlayCard();
-        }
-    }
-
-    public void SelectQueue(string queue)
-    {
-        int tmpQue;
-        if (queue == "Newsstand Queue")
-            tmpQue = 0;
-        else if (queue == "Grocery Queue")
-            tmpQue = 1;
-        else if (queue == "Electronic Queue")
-            tmpQue = 2;
-        else if (queue == "Furniture Queue")
-            tmpQue = 3;
-        else if (queue == "Clothing Queue")
-            tmpQue = 4;
-        else //if(myQueue.name == "Bazaar Queue")
-            tmpQue = 5;
-
-        if (playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.ListaSpoleczna)
-        {
-            List<int[]> tmpQueueList = new List<int[]>();
-            foreach (int[] pawn in pawnOwners[tmpQue])
-                tmpQueueList.Add(pawn);
-            tmpQueueList.Reverse();
-            pawnOwners[tmpQue].Clear();
-
-            int i = 0;
-            foreach (GameObject field in fieldsDictionary[tmpQue])
-            {
-                int[] tmpPawn = tmpQueueList[i];
-
-                if(tmpPawn[0] != 9)
-                    MovePawn(players[tmpPawn[0]].pawns[tmpPawn[1]], field);
-                else
-                    MovePawn(blackPawns[tmpPawn[1]], field);
-
-                pawnOwners[tmpQue].Add(tmpPawn);
-                i++;
-            }
-
-            players[currentPlayer].PlayManipulationCard(playedManipulationCard);
-            selectedManipulationCard = null;
-            playedManipulationCard = null;
-
-            EndOfTurn();
-        }
-        else if (playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.SzczesliwyTraf && isPawnSelected == true)
-        {
-
-        }
-
-        
-
-    }
-
-    public void PlayManipulationCard()
-    {
-        playedManipulationCard = selectedManipulationCard;
-
-        if( playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.KolegaWKomitecie)
-        {
-            //pokaż na 3 sekundy 2 pierwsze karty dostaw
-        }
-    }
-
-    public void FoldManipulationCard()
-    {
-
-        selectedManipulationCard = null;
-        playedManipulationCard = null;
-        players[currentPlayer].ToFold();
-        EndOfTurn();
-    }
-
+  
     public void EndOfTurn()
     {
         this.GetNextPlayer();
@@ -517,31 +351,6 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-        if(phase == Phase.Supply)
-        {
-            EndOfTurn();
-        }
-
-        if(phase == Phase.Manipulations)
-        {
-            if(day != Day.Saturday && turn == 0)
-            {
-                if (day == Day.Monday)
-                    players[currentPlayer].SetManipulationCards();
-
-                players[currentPlayer].SetAvlManipulationCards();
-                players[currentPlayer].UnFold();
-            }
-
-            if (players[currentPlayer].fold == true)
-                EndOfTurn();
-
-            isPawnSelected = false;
-            uiManager.UpdateManipulationCards(players[currentPlayer].avlManipulationCards[0].getImage(), players[currentPlayer].avlManipulationCards[1].getImage(), players[currentPlayer].avlManipulationCards[2].getImage());
-            
-            //players[currentPlayer].avlManipulationCards.;
-        }
-
 
         players[currentPlayer].MakeMove();
 
