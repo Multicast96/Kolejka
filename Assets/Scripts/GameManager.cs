@@ -50,9 +50,10 @@ public class GameManager : MonoBehaviour {
 
     public ManipulationCard selectedManipulationCard;
     public ManipulationCard playedManipulationCard;
+    public bool isManipulationCardPlayed = false;
+
     public int[] selectedPawn = new int[2];
     public bool isPawnSelected = false;
-    
 
     // Use this for initialization
     void Start()
@@ -98,11 +99,10 @@ public class GameManager : MonoBehaviour {
             pawnOwners[i] = new List<int[]>();
             fieldsDictionary[i] = new List<GameObject>();
         }
-            //pawnsInQueue[i] = new List<GameObject>();
+        uiManager.UpdateManipulationCards();
 
 
-
-            // Ustawienie kart towarów na samochodach
+        // Ustawienie kart towarów na samochodach
         int bazaarFieldCounter = 1;
         foreach(string shopName in System.Enum.GetNames(typeof(Shop))){
             if (shopName == Shop.Bazaar.ToString()) continue;
@@ -350,7 +350,7 @@ public class GameManager : MonoBehaviour {
         else //if(myQueue.name == "Bazaar Queue")
             tmpQue = 5;
 
-        if (playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.ListaSpoleczna)
+        if (isManipulationCardPlayed == true && playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.ListaSpoleczna)
         {
             List<int[]> tmpQueueList = new List<int[]>();
             foreach (int[] pawn in pawnOwners[tmpQue])
@@ -390,8 +390,9 @@ public class GameManager : MonoBehaviour {
     public void PlayManipulationCard()
     {
         playedManipulationCard = selectedManipulationCard;
+        isManipulationCardPlayed = true;
 
-        if( playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.KolegaWKomitecie)
+        if ( playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.KolegaWKomitecie)
         {
             //pokaż na 3 sekundy 2 pierwsze karty dostaw
         }
@@ -402,6 +403,7 @@ public class GameManager : MonoBehaviour {
 
         selectedManipulationCard = null;
         playedManipulationCard = null;
+        isManipulationCardPlayed = false;
         players[currentPlayer].ToFold();
         EndOfTurn();
     }
@@ -482,12 +484,24 @@ public class GameManager : MonoBehaviour {
             if (players[currentPlayer].fold == true)
                 EndOfTurn();
 
+            isManipulationCardPlayed = false;
             isPawnSelected = false;
-            uiManager.UpdateManipulationCards(players[currentPlayer].avlManipulationCards[0].getImage(), players[currentPlayer].avlManipulationCards[1].getImage(), players[currentPlayer].avlManipulationCards[2].getImage());
-            
+            if(players[currentPlayer].avlManipulationCards.Count > 2)
+                uiManager.UpdateManipulationCards(players[currentPlayer].avlManipulationCards[0].getImage(), players[currentPlayer].avlManipulationCards[1].getImage(), players[currentPlayer].avlManipulationCards[2].getImage());
+            else if (players[currentPlayer].avlManipulationCards.Count > 1)
+                uiManager.UpdateManipulationCards(players[currentPlayer].avlManipulationCards[0].getImage(), players[currentPlayer].avlManipulationCards[1].getImage());
+            else if(players[currentPlayer].avlManipulationCards.Count > 0)
+                uiManager.UpdateManipulationCards(players[currentPlayer].avlManipulationCards[0].getImage());
+            else 
+                uiManager.UpdateManipulationCards();
+
             //players[currentPlayer].avlManipulationCards.;
         }
 
+        if(phase == Phase.Opening)
+        {
+            uiManager.UpdateManipulationCards();
+        }
 
         players[currentPlayer].MakeMove();
     }

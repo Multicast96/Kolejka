@@ -49,19 +49,46 @@ public class UIManager : MonoBehaviour {
         shoppingList.sprite = image;
     }
 
+    public void UpdateManipulationCards()
+    {
+        Color colorVar = new Color(1f, 1f, 1f, 0f);
+        manipulationCard_1.color = colorVar;
+        manipulationCard_2.color = colorVar;
+        manipulationCard_3.color = colorVar;
+    }
+
+    public void UpdateManipulationCards(Sprite image1)
+    {
+        Color colorVar = new Color(1f, 1f, 1f, 1f);
+        manipulationCard_1.sprite = image1;
+        manipulationCard_1.color = colorVar;
+
+        colorVar = new Color(1f, 1f, 1f, 0f);
+        manipulationCard_2.color = colorVar;
+        manipulationCard_3.color = colorVar;
+    }
+
+    public void UpdateManipulationCards(Sprite image1, Sprite image2)
+    {
+        Color colorVar = new Color(1f, 1f, 1f, 1f);
+        manipulationCard_1.sprite = image1;
+        manipulationCard_2.sprite = image2;
+        manipulationCard_1.color = colorVar;
+        manipulationCard_2.color = colorVar;
+
+        colorVar = new Color(1f, 1f, 1f, 0f);
+        manipulationCard_3.color = colorVar;
+    }
+
     public void UpdateManipulationCards(Sprite image1, Sprite image2, Sprite image3)
     {
-        //if(image1 == null)
-        //{
-        //    Color color = new Color(1f, 1f, 1f, 0f);
-        //    manipulationCard_1.sprite = image1;
-        //    manipulationCard_1.sprite.
-
-        //}
-        //else
+        Color colorVar = new Color(1f, 1f, 1f, 1f);
         manipulationCard_1.sprite = image1;
         manipulationCard_2.sprite = image2;
         manipulationCard_3.sprite = image3;
+        manipulationCard_1.color = colorVar;
+        manipulationCard_2.color = colorVar;
+        manipulationCard_3.color = colorVar;
     }
 
     public void SelectCard(GameObject ob)
