@@ -7,7 +7,7 @@ public class FieldManager : MonoBehaviour
 
     //public PawnManager pawnManager;
     public GameManager gameManager;
-    public bool isTaken { get; private set; }
+    public bool isTaken;
 
     // Use this for initialization
     void Start()
