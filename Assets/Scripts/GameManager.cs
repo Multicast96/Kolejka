@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour {
     public uint numberOfProductsInDeliveryTruck = 20;
     public uint numberOfDeliveryCards = 10;
     Object pawnPrefab;
-    GameObject pawn;
+    //GameObject pawn;
     public GameObject[] blackPawns = new GameObject[5];
 
     // gracz zaczynajacy dzien
@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour {
     List<Player> players = new List<Player>();
     List<ShoppingList> shoppingLists = new List<ShoppingList>();
     public Dictionary<Shop, QueueManager> queues = new Dictionary<Shop, QueueManager>();
+    public Dictionary<Shop, StackManager> products = new Dictionary<Shop, StackManager>();
+    public Dictionary<Shop, string> shopLiteral = new Dictionary<Shop, string>();
 
     public List<Sprite> manipulationGreenCardsImages = new List<Sprite>();
     public List<Sprite> manipulationRedCardsImages = new List<Sprite>();
@@ -75,11 +77,30 @@ public class GameManager : MonoBehaviour {
         numberOfTurns = 4;
 
         queues.Add(Shop.Newsstand, GameObject.Find("Newsstand Queue").GetComponent<QueueManager>());
+        GameObject.Find("Newsstand Queue").GetComponent<QueueManager>().shop = Shop.Newsstand;
         queues.Add(Shop.Grocery, GameObject.Find("Grocery Queue").GetComponent<QueueManager>());
+        GameObject.Find("Grocery Queue").GetComponent<QueueManager>().shop = Shop.Grocery;
         queues.Add(Shop.Electronic, GameObject.Find("Electronic Queue").GetComponent<QueueManager>());
+        GameObject.Find("Electronic Queue").GetComponent<QueueManager>().shop = Shop.Electronic;
         queues.Add(Shop.Furniture, GameObject.Find("Furniture Queue").GetComponent<QueueManager>());
+        GameObject.Find("Furniture Queue").GetComponent<QueueManager>().shop = Shop.Furniture;
         queues.Add(Shop.Clothing, GameObject.Find("Clothing Queue").GetComponent<QueueManager>());
+        GameObject.Find("Clothing Queue").GetComponent<QueueManager>().shop = Shop.Clothing;
         queues.Add(Shop.Bazaar, GameObject.Find("Bazaar Queue").GetComponent<QueueManager>());
+        GameObject.Find("Bazaar Queue").GetComponent<QueueManager>().shop = Shop.Bazaar;
+
+        shopLiteral.Add(Shop.Newsstand, "Newsstand");
+        shopLiteral.Add(Shop.Grocery, "Grocery");
+        shopLiteral.Add(Shop.Electronic, "Electronic");
+        shopLiteral.Add(Shop.Furniture, "Furniture");
+        shopLiteral.Add(Shop.Clothing, "Clothing");
+        shopLiteral.Add(Shop.Bazaar, "Bazaar");
+
+        products.Add(Shop.Newsstand, GameObject.Find("Newsstand Store Card Field").GetComponent<StackManager>());
+        products.Add(Shop.Grocery, GameObject.Find("Grocery Store Card Field").GetComponent<StackManager>());
+        products.Add(Shop.Electronic, GameObject.Find("Electronic Store Card Field").GetComponent<StackManager>());
+        products.Add(Shop.Furniture, GameObject.Find("Furniture Store Card Field").GetComponent<StackManager>());
+        products.Add(Shop.Clothing, GameObject.Find("Clothing Store Card Field").GetComponent<StackManager>());
 
         shoppingLists.Add(new ShoppingList(shoppingListImages[0], "wyposazyc kuchnie", Electronic: 4, Grocery: 0, Newsstand: 1, Clothing: 2, Furniture: 3));
         shoppingLists.Add(new ShoppingList(shoppingListImages[1], "wyprawic pierwsza komunie", Electronic: 3, Grocery: 4, Newsstand: 0, Clothing: 1, Furniture: 2));
@@ -161,7 +182,7 @@ public class GameManager : MonoBehaviour {
     {
         var trash = GameObject.Find("Trash").GetComponent<StackManager>();
         var allChildren = new List<Transform>();
-        while (!trash.isEmpty())
+        while (!trash.IsEmpty())
         {
             allChildren.Add(trash.Pop().transform);
         }
@@ -198,7 +219,8 @@ public class GameManager : MonoBehaviour {
         if (players[currentPlayer].pawnsInHand > 0 && phase == Phase.PawnsPlacing)
         {
             int pawnNumber = Player.maxPawns - players[currentPlayer].pawnsInHand;
-            GameObject pawn = players[currentPlayer].pawns[pawnNumber];
+            //GameObject pawn = players[currentPlayer].pawns[pawnNumber];
+            GameObject pawn = players[currentPlayer].pawns[pawnNumber].gameObject;
             players[currentPlayer].PutDownPawn();
             MovePawn(pawn, field);
 
@@ -236,6 +258,7 @@ public class GameManager : MonoBehaviour {
     public void MovePawn(GameObject pawn, GameObject field)
     {
         pawn.transform.SetPositionAndRotation(field.transform.position, field.transform.rotation);
+        pawn.transform.SetParent(field.transform);
     }
 
 
@@ -272,8 +295,9 @@ public class GameManager : MonoBehaviour {
                 break;
             if((!queue.Value.isFull) && (!queue.Value.hasBlackPawn))
             {
-                Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Black Pawn.prefab", typeof(GameObject));
-                foreach(FieldManager field in queue.Value.gameObject.GetComponentsInChildren<FieldManager>())
+                //Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Black Pawn.prefab", typeof(GameObject));
+                var pawn = GameObject.Find(string.Format("{0} Vendor", shopLiteral[queue.Key]));
+                foreach (FieldManager field in queue.Value.gameObject.GetComponentsInChildren<FieldManager>())
                 {
                     if (field.PutBlackPawn())
                     {
@@ -293,7 +317,10 @@ public class GameManager : MonoBehaviour {
                         else
                             tmpQue = 5;
 
-                        pawn = Instantiate(prefab, field.transform.position, field.transform.rotation) as GameObject;
+                        //pawn = Instantiate(prefab, field.transform.position, field.transform.rotation) as GameObject;
+                        pawn.transform.SetPositionAndRotation(field.transform.position, field.transform.rotation);
+                        pawn.transform.SetParent(field.transform);
+
                         queue.Value.hasBlackPawn = true;
 
                         blackPawns[tmpQue] = pawn;
@@ -310,17 +337,47 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Dostawia karte towaru na pole podanego sklepu.
+    /// </summary>
+    private void PutStoreCardOnStoreField(Shop store, int numberOfProducts)
+    {
+        string truck = string.Format("{0} Store Truck", shopLiteral[store]);
+        var storeTruckStack = GameObject.Find(truck).GetComponent<StackManager>();
+        var storeCardFieldStack = products[store];
+        for (int i = 0; i < numberOfProducts; i++)
+        {
+            var card = storeTruckStack.Pop();
+            storeCardFieldStack.Push(card);
+        }
+    }
+
     private void SupplyPhase()
     {
         var deliveryStack = GameObject.Find("Stack of Delivery Cards").GetComponent<StackManager>();
-        for (int i = 0; i < 3; i++)
+        for (int i = 1; i < 4; i++)
         {
-            if (deliveryStack.isEmpty()) break;
+            if (deliveryStack.IsEmpty()) break;
             var deliveryField = GameObject.Find(string.Format("Delivery Cards Field {0}", i));
             var card = deliveryStack.Pop();
             card.GetComponent<DeliveryCard>().ShowDelivery();
             card.transform.parent = deliveryField.transform;
             card.transform.position = deliveryField.transform.position;
+            PutStoreCardOnStoreField(card.GetComponent<DeliveryCard>().shop, card.GetComponent<DeliveryCard>().productsToBeDelivered);
+        }
+    }
+
+    private void TakeProducts()
+    {
+        foreach (KeyValuePair<Shop, StackManager> product_pile in products)
+        {
+            // Zbieraj przedmioty jesli kolejka do sklepu nie jest pusta
+            // i sklep nie jest pusty
+            while (!product_pile.Value.IsEmpty() && !queues[product_pile.Key].IsEmpty())
+            {
+                queues[product_pile.Key].MovePawnsByOneFieldToTheFrontOfTheQueue();
+                product_pile.Value.Pop();
+            }
         }
     }
 
@@ -382,7 +439,6 @@ public class GameManager : MonoBehaviour {
         {
 
         }
-
         
 
     }
@@ -465,14 +521,21 @@ public class GameManager : MonoBehaviour {
                 }
             }
         }
-        if(phase == Phase.Supply)
+
+        players[currentPlayer].MakeMove();
+
+        if (phase == Phase.Supply)
         {
-            EndOfTurn();
+            this.SupplyPhase();
+            phase++;
+            // TODO usunąć poniższą linijkę gdy faza manipulacji będzie robiona
+            //phase++;
+            uiManager.UpdatePhase(phase);
         }
 
-        if(phase == Phase.Manipulations)
+        if (phase == Phase.Manipulations)
         {
-            if(day != Day.Saturday && turn == 0)
+            if (day != Day.Saturday && turn == 0)
             {
                 if (day == Day.Monday)
                     players[currentPlayer].SetManipulationCards();
@@ -486,24 +549,25 @@ public class GameManager : MonoBehaviour {
 
             isManipulationCardPlayed = false;
             isPawnSelected = false;
-            if(players[currentPlayer].avlManipulationCards.Count > 2)
+            if (players[currentPlayer].avlManipulationCards.Count > 2)
                 uiManager.UpdateManipulationCards(players[currentPlayer].avlManipulationCards[0].getImage(), players[currentPlayer].avlManipulationCards[1].getImage(), players[currentPlayer].avlManipulationCards[2].getImage());
             else if (players[currentPlayer].avlManipulationCards.Count > 1)
                 uiManager.UpdateManipulationCards(players[currentPlayer].avlManipulationCards[0].getImage(), players[currentPlayer].avlManipulationCards[1].getImage());
-            else if(players[currentPlayer].avlManipulationCards.Count > 0)
+            else if (players[currentPlayer].avlManipulationCards.Count > 0)
                 uiManager.UpdateManipulationCards(players[currentPlayer].avlManipulationCards[0].getImage());
-            else 
+            else
                 uiManager.UpdateManipulationCards();
 
             //players[currentPlayer].avlManipulationCards.;
         }
 
-        if(phase == Phase.Opening)
+        if (phase == Phase.Opening)
         {
             uiManager.UpdateManipulationCards();
+            TakeProducts();
+            phase++;
+            uiManager.UpdatePhase(phase);
         }
-
-        players[currentPlayer].MakeMove();
     }
 }
 
