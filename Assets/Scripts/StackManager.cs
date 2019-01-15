@@ -51,7 +51,7 @@ public class StackManager : MonoBehaviour {
         return stack.Pop();
     }
 
-    public bool IsEmpty()
+    public bool isEmpty()
     {
         if (stack.Count == 0) return true;
         else return false;
