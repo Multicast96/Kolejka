@@ -51,10 +51,13 @@ public class UIManager : MonoBehaviour {
 
     public void UpdateManipulationCards()
     {
-        Color colorVar = new Color(1f, 1f, 1f, 0f);
-        manipulationCard_1.color = colorVar;
-        manipulationCard_2.color = colorVar;
-        manipulationCard_3.color = colorVar;
+        //Color colorVar = new Color(1f, 1f, 1f, 0f);
+        //manipulationCard_1.color = colorVar;
+        //manipulationCard_2.color = colorVar;
+        //manipulationCard_3.color = colorVar;
+        manipulationCard_1.enabled = false;
+        manipulationCard_2.enabled = false;
+        manipulationCard_3.enabled = false;
     }
 
     public void UpdateManipulationCards(Sprite image1)
@@ -62,10 +65,13 @@ public class UIManager : MonoBehaviour {
         Color colorVar = new Color(1f, 1f, 1f, 1f);
         manipulationCard_1.sprite = image1;
         manipulationCard_1.color = colorVar;
+        manipulationCard_1.enabled = true;
 
-        colorVar = new Color(1f, 1f, 1f, 0f);
-        manipulationCard_2.color = colorVar;
-        manipulationCard_3.color = colorVar;
+        //colorVar = new Color(1f, 1f, 1f, 0f);
+        //manipulationCard_2.color = colorVar;
+        //manipulationCard_3.color = colorVar;
+        manipulationCard_2.enabled = false;
+        manipulationCard_3.enabled = false;
     }
 
     public void UpdateManipulationCards(Sprite image1, Sprite image2)
@@ -75,9 +81,12 @@ public class UIManager : MonoBehaviour {
         manipulationCard_2.sprite = image2;
         manipulationCard_1.color = colorVar;
         manipulationCard_2.color = colorVar;
+        manipulationCard_1.enabled = true;
+        manipulationCard_2.enabled = true;
 
-        colorVar = new Color(1f, 1f, 1f, 0f);
-        manipulationCard_3.color = colorVar;
+        //colorVar = new Color(1f, 1f, 1f, 0f);
+        //manipulationCard_3.color = colorVar;
+        manipulationCard_3.enabled = false;
     }
 
     public void UpdateManipulationCards(Sprite image1, Sprite image2, Sprite image3)
@@ -89,6 +98,9 @@ public class UIManager : MonoBehaviour {
         manipulationCard_1.color = colorVar;
         manipulationCard_2.color = colorVar;
         manipulationCard_3.color = colorVar;
+        manipulationCard_1.enabled = true;
+        manipulationCard_2.enabled = true;
+        manipulationCard_3.enabled = true;
     }
 
     public void SelectCard(GameObject ob)

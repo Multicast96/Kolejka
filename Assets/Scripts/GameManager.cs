@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour {
         week = 1;
         day = Day.Monday;
         phase = Phase.PawnsPlacing;
-        turn = 0;
+        turn = 1;
         currentPlayer = 0;
         scoreTab.GetPlayersList(players);
 
@@ -74,8 +74,8 @@ public class GameManager : MonoBehaviour {
         uiManager.UpdatePhase(phase);
 
         markedPlayer = 0;
-        numberOfPlayers = 4;
-        numberOfTurns = 4;
+        numberOfPlayers = 5;
+        numberOfTurns = 5;
 
         queues.Add(Shop.Newsstand, GameObject.Find("Newsstand Queue").GetComponent<QueueManager>());
         GameObject.Find("Newsstand Queue").GetComponent<QueueManager>().shop = Shop.Newsstand;
@@ -160,8 +160,8 @@ public class GameManager : MonoBehaviour {
         System.Random rnd = new System.Random();
         int firstList = rnd.Next(0, 5);
 
-        Color[] colors = { Color.magenta, Color.yellow, Color.green, Color.blue, Color.red };
-        for(int i = 0; i < numberOfPlayers - 1; i++)
+        Color[] colors = { Color.blue, Color.red, Color.green, Color.grey, Color.yellow };
+        for(int i = 0; i < numberOfPlayers-1; i++)
         {
             players.Add(new Player(colors[i], i, shoppingLists[(firstList+i)%5], manipulationCardsImages[i]));
         }
@@ -271,7 +271,10 @@ public class GameManager : MonoBehaviour {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         uiManager.UpdatePlayer(currentPlayer);
         uiManager.UpdateShoppingList(players[currentPlayer].shoppinglist.image);
-        uiManager.UpdateManipulationCards();
+        if(phase == Phase.Manipulations)
+        {
+            uiManager.UpdateManipulationCards();
+        }      
     }
 
     /// <summary>
@@ -801,7 +804,13 @@ public class GameManager : MonoBehaviour {
 
     public void EndOfTurn()
     {
+        Debug.Log(turn);
         this.GetNextPlayer();
+
+
+        // USTAWIENIE DNIA
+
+
         if (currentPlayer == markedPlayer)
         {
             if (phase == Phase.PawnsPlacing)
@@ -820,7 +829,8 @@ public class GameManager : MonoBehaviour {
                 if (placeBlackPawns)
                     this.PutDownBlackPawns();
             }
-            if (turn < numberOfTurns) { 
+            if (turn < numberOfTurns)
+            {
                 turn++;
             }
             else
@@ -899,6 +909,7 @@ public class GameManager : MonoBehaviour {
         if (phase == Phase.Opening)
         {
             TakeProducts();
+            uiManager.UpdateManipulationCards();
             phase++;
             uiManager.UpdatePhase(phase);
         }
