@@ -40,7 +40,7 @@ public class QueueManager : MonoBehaviour
         if (gameManager.phase == GameManager.Phase.PawnsPlacing)
             PutPawn();
         else if (gameManager.phase == GameManager.Phase.Manipulations)
-            gameManager.SelectQueue(gameObject.GetComponent<QueueManager>().name);
+            gameManager.SelectQueue(gameObject.GetComponent<QueueManager>());
     }
 
     public bool PutPawn()
@@ -111,5 +111,24 @@ public class QueueManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    public GameObject getGameObject()
+    {
+        return gameObject;
+    }
+
+    public GameObject getFreeField()
+    {
+        FieldManager[] children = gameObject.GetComponentsInChildren<FieldManager>();
+
+        foreach (FieldManager child in children)
+        {
+            if (!child.isTaken)
+            {
+                return child.getGameObject();
+            }
+        }
+        return null;
     }
 }
