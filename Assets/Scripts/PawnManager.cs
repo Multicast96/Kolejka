@@ -27,6 +27,7 @@ public class PawnManager : MonoBehaviour
 
     private void OnMouseDown()
     {
-
+        if (gameManager.phase == GameManager.Phase.Manipulations)
+            gameManager.SelectPawn(gameObject.GetComponent<PawnManager>().name, gameObject.GetComponent<PawnManager>().player);
     }
 }

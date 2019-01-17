@@ -31,6 +31,11 @@ public class FieldManager : MonoBehaviour
         }
     }
 
+    public GameObject getGameObject()
+    {
+        return gameObject;
+    }
+
     /// <summary>
     /// Jeśli pole nie jest zajęte to ustawia to pole jako zajęte.
     /// </summary>
