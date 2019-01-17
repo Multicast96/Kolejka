@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour {
     public bool isManipulationCardPlayed = false;
 
     public int[] selectedPawn = new int[2];
+    public Player selectedPawnPlayer;
     public bool isPawnSelected = false;
 
     // Use this for initialization
@@ -264,9 +265,13 @@ public class GameManager : MonoBehaviour {
 
     public void GetNextPlayer()
     {
+        isPawnSelected = false;
+        isManipulationCardPlayed = false;
+        selectedManipulationCard = null;
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         uiManager.UpdatePlayer(currentPlayer);
         uiManager.UpdateShoppingList(players[currentPlayer].shoppinglist.image);
+        uiManager.UpdateManipulationCards();
     }
 
     /// <summary>
@@ -376,6 +381,7 @@ public class GameManager : MonoBehaviour {
             while (!product_pile.Value.IsEmpty() && !queues[product_pile.Key].IsEmpty())
             {
                 queues[product_pile.Key].MovePawnsByOneFieldToTheFrontOfTheQueue();
+                DeleteFirstPawnInQueueDictionary(queues[product_pile.Key]);
                 product_pile.Value.Pop();
             }
         }
@@ -391,8 +397,9 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void SelectQueue(string queue)
+    public void SelectQueue(QueueManager queueManager)
     {
+        string queue = queueManager.name;
         int tmpQue;
         if (queue == "Newsstand Queue")
             tmpQue = 0;
@@ -437,10 +444,338 @@ public class GameManager : MonoBehaviour {
         }
         else if (playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.SzczesliwyTraf && isPawnSelected == true)
         {
+            int tmpPawnQue = 0;
+            int tmpPawnField = 0;
+
+            for (int i = 0; i < 5; i++)
+            {
+                int j = 0;
+                foreach (int[] pawn in pawnOwners[i])
+                {
+                    if (pawn[0] == selectedPawnPlayer.numberOfPlayer && pawn[1] == selectedPawn[1])
+                    {
+                        tmpPawnQue = i;
+                        tmpPawnField = j;
+                    }
+                    j++;
+                }
+            }
+
+            //dodanie pionka do innej kolejki
+            pawnOwners[tmpQue].Insert(1, selectedPawn);
+            for(int i=1; i<(pawnOwners[tmpQue].Count -1) ; i++)
+            {
+                if (pawnOwners[tmpQue][i][0] == 9)
+                    MovePawn(blackPawns[pawnOwners[tmpQue][i][1]], fieldsDictionary[tmpQue][i]);
+                else
+                    MovePawn(players[pawnOwners[tmpQue][i][0]].pawns[pawnOwners[tmpQue][i][1]], fieldsDictionary[tmpQue][i]);
+            }
+
+            GameObject freeField = queueManager.getFreeField();
+
+            if(freeField != null)
+            {
+                fieldsDictionary[tmpQue].Add(freeField);
+                if (pawnOwners[tmpQue][pawnOwners[tmpQue].Count-1][0] == 9)
+                    MovePawn(blackPawns[pawnOwners[tmpQue][pawnOwners[tmpQue].Count-1][1]], fieldsDictionary[tmpQue][pawnOwners[tmpQue].Count-1]);
+                else
+                    MovePawn(players[pawnOwners[tmpQue][pawnOwners[tmpQue].Count-1][0]].pawns[pawnOwners[tmpQue][pawnOwners[tmpQue].Count-1][1]], fieldsDictionary[tmpQue][pawnOwners[tmpQue].Count-1]);
+            }
+            else
+                pawnOwners[tmpQue].RemoveAt(pawnOwners[tmpQue].Count-1);
+
+            //usuniecie pionka
+            pawnOwners[tmpPawnQue].RemoveAt(tmpPawnField);
+            fieldsDictionary[tmpPawnQue].RemoveAt(fieldsDictionary[tmpPawnQue].Count -1);
+
+            for(int i=tmpPawnField ; i < pawnOwners[tmpPawnQue].Count ; i++)
+            {
+                if (pawnOwners[tmpPawnQue][i][0] == 9)
+                    MovePawn(blackPawns[pawnOwners[tmpPawnQue][i][1]], fieldsDictionary[tmpPawnQue][i]);
+                else
+                    MovePawn(players[pawnOwners[tmpPawnQue][i][0]].pawns[pawnOwners[tmpPawnQue][i][1]], fieldsDictionary[tmpPawnQue][i]);
+            }
+
+            //koniec
+
+            players[currentPlayer].PlayManipulationCard(playedManipulationCard);
+            selectedManipulationCard = null;
+            playedManipulationCard = null;
+
+            EndOfTurn();
 
         }
         
+    }
 
+    public void SelectPawn(string pawnName, Player pawnPlayer)
+    {
+        int pawnNumber = 0;
+        bool isVendor = false;
+        int[] tmpPawn = new int[2];
+
+        if (pawnName == "Pawn 0")
+            pawnNumber = 0;
+        else if (pawnName == "Pawn 1")
+            pawnNumber = 1;
+        else if (pawnName == "Pawn 2")
+            pawnNumber = 2;
+        else if (pawnName == "Pawn 3")
+            pawnNumber = 3;
+        else if (pawnName == "Pawn 4")
+            pawnNumber = 4;
+        else
+        {
+            isVendor = true;
+            if (pawnName == "Newsstand Vendor")
+                pawnNumber = 0;
+            else if (pawnName == "Grocery Vendor")
+                pawnNumber = 1;
+            else if (pawnName == "Electronic Vendor")
+                pawnNumber = 2;
+            else if (pawnName == "Furniture Vendor")
+                pawnNumber = 3;
+            else if (pawnName == "Clothing Vendor")
+                pawnNumber = 4;
+        }
+
+        if (isVendor)
+        {
+            tmpPawn[0] = 9;
+            tmpPawn[1] = pawnNumber;
+        }
+        else
+            tmpPawn[0] = pawnPlayer.numberOfPlayer;
+            tmpPawn[1] = pawnNumber;
+
+        if (isManipulationCardPlayed == true && playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.KrytykaWladzy)
+        {
+            int tmpQue = 0;
+            int tmpField = 0;
+
+            for (int i = 0; i < 5; i++)
+            {
+                int j = 0;
+                foreach (int[] pawn in pawnOwners[i])
+                {
+                    if (pawn[0] == pawnPlayer.numberOfPlayer && pawn[1] == pawnNumber)
+                    {
+                        tmpQue = i;
+                        tmpField = j;
+                    }
+                    j++;
+                }
+            }
+
+            List<GameObject> tmpFieldsQueue = fieldsDictionary[tmpQue];
+
+            List<int[]> tmpQueueList = new List<int[]>();
+            foreach (int[] pawn in pawnOwners[tmpQue])
+                tmpQueueList.Add(pawn);
+
+            pawnOwners[tmpQue].Clear();
+
+            int k = 0;
+            foreach (int[] pawn in tmpQueueList)
+            {
+                if (k < tmpField)
+                    pawnOwners[tmpQue].Add(pawn);
+                else
+                    break;
+                k++;
+            }
+
+            for (; k < (tmpField + 2) && k < tmpQueueList.Count; k++)
+            {
+                pawnOwners[tmpQue].Add(tmpQueueList[k + 1]);
+                int[] tmp = tmpQueueList[k + 1];
+
+                if (tmp[0] != 9)
+                    MovePawn(players[tmp[0]].pawns[tmp[1]], tmpFieldsQueue[k]);
+                else
+                    MovePawn(blackPawns[tmp[1]], tmpFieldsQueue[k]);
+            }
+
+            pawnOwners[tmpQue].Add(tmpPawn);
+            if (tmpPawn[0] != 9)
+                MovePawn(players[tmpPawn[0]].pawns[tmpPawn[1]], tmpFieldsQueue[k]);
+            else
+                MovePawn(blackPawns[tmpPawn[1]], tmpFieldsQueue[k]);
+
+            for (k++; k < tmpQueueList.Count; k++)
+            {
+                pawnOwners[tmpQue].Add(tmpQueueList[k]);
+                int[] tmp = tmpQueueList[k];
+                if (tmp[0] != 9)
+                    MovePawn(players[tmp[0]].pawns[tmp[1]], tmpFieldsQueue[k]);
+                else
+                    MovePawn(blackPawns[tmp[1]], tmpFieldsQueue[k]);
+            }
+
+            players[currentPlayer].PlayManipulationCard(playedManipulationCard);
+            selectedManipulationCard = null;
+            playedManipulationCard = null;
+            
+            EndOfTurn();
+        }
+        else if (isManipulationCardPlayed == true && playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.MatkaZDzieckiem)
+        {
+            int tmpQue = 0;
+            int tmpField = 0;
+
+            for (int i = 0; i < 5; i++)
+            {
+                int j = 0;
+                foreach (int[] pawn in pawnOwners[i])
+                {
+                    if (pawn[0] == pawnPlayer.numberOfPlayer && pawn[1] == pawnNumber)
+                    {
+                        tmpQue = i;
+                        tmpField = j;
+                    }
+                    j++;
+                }
+            }
+
+            List<GameObject> tmpFieldsQueue = fieldsDictionary[tmpQue];
+
+            List<int[]> tmpQueueList = new List<int[]>();
+            foreach (int[] pawn in pawnOwners[tmpQue])
+                tmpQueueList.Add(pawn);
+
+            pawnOwners[tmpQue].Clear();
+
+            int k = 0;
+
+            pawnOwners[tmpQue].Add(tmpPawn);
+            if (tmpPawn[0] != 9)
+                MovePawn(players[tmpPawn[0]].pawns[tmpPawn[1]], tmpFieldsQueue[k]);
+            else
+                MovePawn(blackPawns[tmpPawn[1]], tmpFieldsQueue[k]);
+
+            for (k++; k <= tmpField && k < tmpQueueList.Count; k++)
+            {
+                pawnOwners[tmpQue].Add(tmpQueueList[k-1]);
+                int[] tmp = tmpQueueList[k-1];
+
+                if (tmp[0] != 9)
+                    MovePawn(players[tmp[0]].pawns[tmp[1]], tmpFieldsQueue[k]);
+                else
+                    MovePawn(blackPawns[tmp[1]], tmpFieldsQueue[k]);
+            }
+
+            for (; k < tmpQueueList.Count; k++)
+            {
+                pawnOwners[tmpQue].Add(tmpQueueList[k]);
+                int[] tmp = tmpQueueList[k];
+
+                if (tmp[0] != 9)
+                    MovePawn(players[tmp[0]].pawns[tmp[1]], tmpFieldsQueue[k]);
+                else
+                    MovePawn(blackPawns[tmp[1]], tmpFieldsQueue[k]);
+            }
+            
+            players[currentPlayer].PlayManipulationCard(playedManipulationCard);
+            selectedManipulationCard = null;
+            playedManipulationCard = null;
+
+            EndOfTurn();
+        }
+        else if (isManipulationCardPlayed == true && playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.PanTuNieStal)
+        {
+            int tmpQue = 0;
+            int tmpField = 0;
+
+            for (int i = 0; i < 5; i++)
+            {
+                int j = 0;
+                foreach (int[] pawn in pawnOwners[i])
+                {
+                    if (pawn[0] == pawnPlayer.numberOfPlayer && pawn[1] == pawnNumber)
+                    {
+                        tmpQue = i;
+                        tmpField = j;
+                    }
+                    j++;
+                }
+            }
+
+            if(tmpField > 0)
+            {
+                List<int[]> tmpPawnQueue = pawnOwners[tmpQue];
+                int[] tmpCloserPawn = new int[2];
+                tmpCloserPawn = tmpPawnQueue[tmpField - 1];
+                List<GameObject> tmpFieldsQueue = fieldsDictionary[tmpQue];
+
+                if (isVendor)
+                {
+                    if (tmpCloserPawn[0] == 9)
+                    {
+                        MovePawn(blackPawns[tmpPawn[1]], tmpFieldsQueue[tmpField - 1]);
+                        MovePawn(blackPawns[tmpCloserPawn[1]], tmpFieldsQueue[tmpField]);
+                    }
+                    else
+                    {
+                        MovePawn(blackPawns[tmpPawn[1]], tmpFieldsQueue[tmpField - 1]);
+                        MovePawn(players[tmpCloserPawn[0]].pawns[tmpCloserPawn[1]], tmpFieldsQueue[tmpField]);
+                    }
+                        
+                }
+                else
+                {
+                    if (tmpCloserPawn[0] == 9)
+                    {
+                        MovePawn(players[tmpPawn[0]].pawns[tmpPawn[1]], tmpFieldsQueue[tmpField - 1]);
+                        MovePawn(blackPawns[tmpCloserPawn[1]], tmpFieldsQueue[tmpField]);
+                    }
+                    else
+                    {
+                        MovePawn(players[tmpPawn[0]].pawns[tmpPawn[1]], tmpFieldsQueue[tmpField - 1]);
+                        MovePawn(players[tmpCloserPawn[0]].pawns[tmpCloserPawn[1]], tmpFieldsQueue[tmpField]);
+                    }
+                }
+
+                pawnOwners[tmpQue].RemoveAt(tmpField);
+                pawnOwners[tmpQue].RemoveAt(tmpField-1);
+
+                pawnOwners[tmpQue].Insert(tmpField - 1, tmpPawn);
+                pawnOwners[tmpQue].Insert(tmpField, tmpCloserPawn);
+
+
+                players[currentPlayer].PlayManipulationCard(playedManipulationCard);
+                selectedManipulationCard = null;
+                playedManipulationCard = null;
+
+                EndOfTurn();
+            }
+        }
+        else if (isManipulationCardPlayed == true && playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.SzczesliwyTraf)
+        {
+            selectedPawn = tmpPawn;
+            selectedPawnPlayer = pawnPlayer;
+            isPawnSelected = true;
+        }
+    }
+
+    public void DeleteFirstPawnInQueueDictionary(QueueManager queueManager)
+    {
+        string queue = queueManager.name;
+        int tmpQue;
+        if (queue == "Newsstand Queue")
+            tmpQue = 0;
+        else if (queue == "Grocery Queue")
+            tmpQue = 1;
+        else if (queue == "Electronic Queue")
+            tmpQue = 2;
+        else if (queue == "Furniture Queue")
+            tmpQue = 3;
+        else if (queue == "Clothing Queue")
+            tmpQue = 4;
+        else //if(myQueue.name == "Bazaar Queue")
+            tmpQue = 5;
+
+        pawnOwners[tmpQue].RemoveAt(0);
+        fieldsDictionary[tmpQue].RemoveAt(fieldsDictionary[tmpQue].Count -1);
     }
 
     public void PlayManipulationCard()
@@ -563,10 +898,19 @@ public class GameManager : MonoBehaviour {
 
         if (phase == Phase.Opening)
         {
-            uiManager.UpdateManipulationCards();
             TakeProducts();
             phase++;
             uiManager.UpdatePhase(phase);
+        }
+
+        if (phase == Phase.Trading)
+        {
+            EndOfTurn();
+        }
+
+        if (phase == Phase.TePeZet)
+        {
+            EndOfTurn();
         }
     }
 }
