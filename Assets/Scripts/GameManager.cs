@@ -219,10 +219,17 @@ public class GameManager : MonoBehaviour {
         // Postaw nowy pionek - metoda dla gracza
         if (players[currentPlayer].pawnsInHand > 0 && phase == Phase.PawnsPlacing)
         {
-            int pawnNumber = Player.maxPawns - players[currentPlayer].pawnsInHand;
+            //int pawnNumber = Player.maxPawns - players[currentPlayer].pawnsInHand;
             //GameObject pawn = players[currentPlayer].pawns[pawnNumber];
+            int pawnNumber = 0;
+            for (; pawnNumber < Player.maxPawns; pawnNumber++)
+            {
+                if (!players[currentPlayer].pawns[pawnNumber].GetComponent<PawnManager>().onBoard)
+                    break;
+            }
             GameObject pawn = players[currentPlayer].pawns[pawnNumber].gameObject;
-            players[currentPlayer].PutDownPawn();
+            //players[currentPlayer].PutDownPawn();
+            players[currentPlayer].PutDownPawn(pawnNumber);
             MovePawn(pawn, field);
 
             int tmpQue;
@@ -794,12 +801,31 @@ public class GameManager : MonoBehaviour {
 
     public void FoldManipulationCard()
     {
+        if (phase == Phase.Manipulations)
+        {
+            selectedManipulationCard = null;
+            playedManipulationCard = null;
+            isManipulationCardPlayed = false;
+            players[currentPlayer].ToFold();
+            EndOfTurn();
+        }
+    }
 
-        selectedManipulationCard = null;
-        playedManipulationCard = null;
-        isManipulationCardPlayed = false;
-        players[currentPlayer].ToFold();
-        EndOfTurn();
+    /// <summary>
+    /// Przygotowanie planszy do następnego dnia.
+    /// Usunięcie zużytych kart dostaw, przesunięcie przekupki.
+    /// </summary>
+    public void TePeZet()
+    {
+        for (int i = 1; i < 4; i++)
+        {
+            var deliveryField = GameObject.Find(string.Format("Delivery Cards Field {0}", i));
+            var card = deliveryField.GetComponentInChildren<DeliveryCard>();
+            var trashField = GameObject.Find("Trash");
+            card.transform.parent = trashField.transform;
+            card.transform.position = trashField.transform.position;
+            trashField.GetComponent<StackManager>().Push(card.gameObject);
+        }
     }
 
     public void EndOfTurn()
@@ -845,6 +871,7 @@ public class GameManager : MonoBehaviour {
                 else
                 {
                     phase = Phase.PawnsPlacing;
+                    uiManager.UpdateManipulationCards();
 
                     if (markedPlayer < numberOfPlayers)
                         markedPlayer++;
@@ -921,7 +948,28 @@ public class GameManager : MonoBehaviour {
 
         if (phase == Phase.TePeZet)
         {
-            EndOfTurn();
+            TePeZet();
+            phase = Phase.PawnsPlacing;
+            uiManager.UpdatePhase(phase);
+            uiManager.UpdateManipulationCards();
+            if (markedPlayer < numberOfPlayers)
+                markedPlayer++;
+            else
+                markedPlayer = 0;
+            currentPlayer = markedPlayer;
+            uiManager.UpdatePlayer(currentPlayer);
+            if (day != Day.Saturday)
+            {
+                day++;
+                uiManager.UpdateDay(day);
+                this.UpdateDay(day);
+            }
+            else
+            {
+                day = Day.Monday;
+                week++;
+                uiManager.UpdateWeek(week);
+            }
         }
     }
 }

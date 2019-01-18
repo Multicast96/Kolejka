@@ -42,20 +42,32 @@ public class Player {
 
     }
 
-    public int PutDownPawn()
+    public int PutDownPawn(int pawnNumber)
     {
         if (pawnsInHand > 0)
         {
             --pawnsInHand;
+            pawns[pawnNumber].GetComponent<PawnManager>().onBoard = true;
         }
         return pawnsInHand;
     }
 
-    public int PickUpPawn()
+    public int PickUpPawn(int pawnNumber)
     {
         if (pawnsInHand < 5)
         {
             pawnsInHand++;
+            pawns[pawnNumber].GetComponent<PawnManager>().onBoard = false;
+        }
+        return pawnsInHand;
+    }
+
+    public int PickUpPawn(PawnManager pawn)
+    {
+        if (pawnsInHand < 5)
+        {
+            pawnsInHand++;
+            pawn.onBoard = false;
         }
         return pawnsInHand;
     }

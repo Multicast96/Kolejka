@@ -9,6 +9,8 @@ public class PawnManager : MonoBehaviour
     public Vector3 startingLocationPosition { get; private set; }
     public Quaternion startingLocationRotation { get; private set; }
     public Player player;
+    // czy pionek jest już na planszy
+    public bool onBoard;
 
 
     // Use this for initialization
@@ -17,6 +19,7 @@ public class PawnManager : MonoBehaviour
         gameManager = GameObject.Find("Game Manager").GetComponent<GameManager>();
         startingLocationPosition = this.gameObject.transform.position;
         startingLocationRotation = this.gameObject.transform.rotation;
+        onBoard = false;
     }
 
     // Update is called once per frame

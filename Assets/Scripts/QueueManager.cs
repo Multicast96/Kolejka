@@ -79,6 +79,7 @@ public class QueueManager : MonoBehaviour
     {
         if (!IsEmpty())
         {
+            if (isFull) isFull = false;
             // usun pierwszy pionek z kolejki
             FieldManager[] children = gameObject.GetComponentsInChildren<FieldManager>();
             PawnManager pawn = children[0].GetComponentInChildren<PawnManager>();
@@ -90,6 +91,7 @@ public class QueueManager : MonoBehaviour
                 {
                     pawn.player.AddItemToMyProductsEquipment(shop);
                     gameManager.scoreTab.UpdateScoreTab();
+                    pawn.player.PickUpPawn(pawn);
                 }
             }
             // ustaw pierwsze pole jako niezajete jesli za nim nie ma juz pionkow
@@ -103,7 +105,7 @@ public class QueueManager : MonoBehaviour
                 pawn = children[i].GetComponentInChildren<PawnManager>();
                 if (pawn != null)
                     gameManager.MovePawn(pawn.gameObject, children[i - 1].gameObject);
-                else
+                if (i == children.Length - 1 || children[i + 1].GetComponentInChildren<PawnManager>() == null)
                 // ustaw ostatnie pole z ktorego przesunieto pionek jako wolne
                 {
                     children[i].isTaken = false;

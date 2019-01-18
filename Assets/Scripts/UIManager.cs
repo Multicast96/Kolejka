@@ -15,6 +15,8 @@ public class UIManager : MonoBehaviour {
     public Image manipulationCard_2;
     public Image manipulationCard_3;
 
+    public Canvas ManipulationCardsUI;
+
     // Use this for initialization
     void Start () {
     }
@@ -55,13 +57,16 @@ public class UIManager : MonoBehaviour {
         //manipulationCard_1.color = colorVar;
         //manipulationCard_2.color = colorVar;
         //manipulationCard_3.color = colorVar;
-        manipulationCard_1.enabled = false;
-        manipulationCard_2.enabled = false;
-        manipulationCard_3.enabled = false;
+        //manipulationCard_1.enabled = false;
+        //manipulationCard_2.enabled = false;
+        //manipulationCard_3.enabled = false;
+        ManipulationCardsUI.enabled = false;
     }
 
     public void UpdateManipulationCards(Sprite image1)
     {
+        ManipulationCardsUI.enabled = true;
+
         Color colorVar = new Color(1f, 1f, 1f, 1f);
         manipulationCard_1.sprite = image1;
         manipulationCard_1.color = colorVar;
@@ -76,6 +81,8 @@ public class UIManager : MonoBehaviour {
 
     public void UpdateManipulationCards(Sprite image1, Sprite image2)
     {
+        ManipulationCardsUI.enabled = true;
+
         Color colorVar = new Color(1f, 1f, 1f, 1f);
         manipulationCard_1.sprite = image1;
         manipulationCard_2.sprite = image2;
@@ -98,6 +105,7 @@ public class UIManager : MonoBehaviour {
         manipulationCard_1.color = colorVar;
         manipulationCard_2.color = colorVar;
         manipulationCard_3.color = colorVar;
+        ManipulationCardsUI.enabled = true;
         manipulationCard_1.enabled = true;
         manipulationCard_2.enabled = true;
         manipulationCard_3.enabled = true;
