@@ -278,10 +278,11 @@ public class GameManager : MonoBehaviour {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         uiManager.UpdatePlayer(currentPlayer);
         uiManager.UpdateShoppingList(players[currentPlayer].shoppinglist.image);
-        if(phase == Phase.Manipulations)
-        {
-            uiManager.UpdateManipulationCards();
-        }      
+        //if(phase == Phase.Manipulations)
+        //{
+        //    uiManager.UpdateManipulationCards();
+        //}
+        uiManager.UpdateManipulationCards();
     }
 
     /// <summary>
@@ -452,7 +453,7 @@ public class GameManager : MonoBehaviour {
 
             EndOfTurn();
         }
-        else if (playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.SzczesliwyTraf && isPawnSelected == true)
+        else if (isPawnSelected == true && playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.SzczesliwyTraf)
         {
             int tmpPawnQue = 0;
             int tmpPawnField = 0;
@@ -837,7 +838,7 @@ public class GameManager : MonoBehaviour {
         // USTAWIENIE DNIA
 
 
-        if (currentPlayer == markedPlayer)
+        if (currentPlayer == 0)
         {
             if (phase == Phase.PawnsPlacing)
             {
@@ -862,35 +863,8 @@ public class GameManager : MonoBehaviour {
             else
             {
                 turn = 0;
-
-                if (phase != Phase.TePeZet)
-                {
-                    phase++;
-                    uiManager.UpdatePhase(phase);
-                }
-                else
-                {
-                    phase = Phase.PawnsPlacing;
-                    uiManager.UpdateManipulationCards();
-
-                    if (markedPlayer < numberOfPlayers)
-                        markedPlayer++;
-                    else
-                        markedPlayer = 0;
-
-                    if (day != Day.Saturday)
-                    {
-                        day++;
-                        uiManager.UpdateDay(day);
-                        this.UpdateDay(day);
-                    }
-                    else
-                    {
-                        day = Day.Monday;
-                        week++;
-                        uiManager.UpdateWeek(week);
-                    }
-                }
+                phase++;
+                uiManager.UpdatePhase(phase);
             }
         }
 
@@ -904,8 +878,7 @@ public class GameManager : MonoBehaviour {
             //phase++;
             uiManager.UpdatePhase(phase);
         }
-
-        if (phase == Phase.Manipulations)
+        else if (phase == Phase.Manipulations)
         {
             if (day != Day.Saturday && turn == 0)
             {
@@ -915,9 +888,6 @@ public class GameManager : MonoBehaviour {
                 players[currentPlayer].SetAvlManipulationCards();
                 players[currentPlayer].UnFold();
             }
-
-            if (players[currentPlayer].fold == true)
-                EndOfTurn();
 
             isManipulationCardPlayed = false;
             isPawnSelected = false;
@@ -930,34 +900,31 @@ public class GameManager : MonoBehaviour {
             else
                 uiManager.UpdateManipulationCards();
 
-            //players[currentPlayer].avlManipulationCards.;
+            if (players[currentPlayer].fold == true)
+                EndOfTurn();
         }
-
-        if (phase == Phase.Opening)
+        else if (phase == Phase.Opening)
         {
             TakeProducts();
             uiManager.UpdateManipulationCards();
             phase++;
             uiManager.UpdatePhase(phase);
-        }
-
-        if (phase == Phase.Trading)
-        {
             EndOfTurn();
         }
-
-        if (phase == Phase.TePeZet)
+        else if (phase == Phase.Trading)
+        {
+            phase++;
+            uiManager.UpdatePhase(phase);
+            EndOfTurn();
+        }
+        else if (phase == Phase.TePeZet)
         {
             TePeZet();
             phase = Phase.PawnsPlacing;
             uiManager.UpdatePhase(phase);
-            uiManager.UpdateManipulationCards();
-            if (markedPlayer < numberOfPlayers)
-                markedPlayer++;
-            else
-                markedPlayer = 0;
-            currentPlayer = markedPlayer;
+            currentPlayer = 0;
             uiManager.UpdatePlayer(currentPlayer);
+
             if (day != Day.Saturday)
             {
                 day++;
@@ -969,6 +936,7 @@ public class GameManager : MonoBehaviour {
                 day = Day.Monday;
                 week++;
                 uiManager.UpdateWeek(week);
+                uiManager.UpdateDay(day);
             }
         }
     }
