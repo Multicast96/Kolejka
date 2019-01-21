@@ -26,9 +26,13 @@ public class PlayerAI : Player
                 PlacingPawnsPhase();
                 break;
             }
+            case GameManager.Phase.Manipulations:
+            {
+                ManipulationPhase();
+                break;
+            }
         }
     }
-    //aa
     //Przepis na zwycięstwo w tej fazie
     // +10 za "nowy" pionek w kolejce
     // +n*5 za każdy (n) pionek który trzeba jeszcze dołożyć do tej kolejki (mamy na liście zakupów przedmiot z tego sklepu)
@@ -80,5 +84,74 @@ public class PlayerAI : Player
             }
         }
 
+    }
+
+    private int CheckCardInHand(ManipulationCard.ManipulationCardName card)
+    {
+        int cardPosition = -1;
+        foreach(var cardInHand in avlManipulationCards)
+        {
+            cardPosition++;
+            if (cardInHand.getCardName() == card)
+                return cardPosition;
+        }
+
+        return -1;
+    }
+
+    private void ManipulationPhase()
+    {
+        foreach(DictionaryEntry pair in pawnsInQueue)
+        {
+            if ((int)pair.Value == 0) continue;
+            FieldManager[] children = gameManager.queues[(GameManager.Shop)pair.Key].gameObject.GetComponentsInChildren<FieldManager>();
+            int myPawnPosition = -1;
+            foreach(var field in children)
+            {
+                myPawnPosition++;
+                if (field.transform.childCount == 0 || field.transform.GetChild(0).GetComponent<PawnManager>().player == this)
+                    break;
+
+            }
+
+            if (myPawnPosition == -1 || myPawnPosition == 0)
+                continue;
+
+            var cardNumber = CheckCardInHand(ManipulationCard.ManipulationCardName.PanTuNieStal);
+            if(cardNumber != -1)
+            {
+                gameManager.SelectManipulationCard(cardNumber);
+                gameManager.PlayManipulationCard();
+                gameManager.SelectPawn(children[myPawnPosition].transform.GetChild(0).GetComponent<PawnManager>().name, this);
+                return;
+            }
+
+            cardNumber = CheckCardInHand(ManipulationCard.ManipulationCardName.MatkaZDzieckiem);
+            if (cardNumber != -1)
+            {
+                gameManager.SelectManipulationCard(cardNumber);
+                gameManager.PlayManipulationCard();
+                gameManager.SelectPawn(children[myPawnPosition].transform.GetChild(0).GetComponent<PawnManager>().name, this);
+                return;
+            }
+
+            cardNumber = CheckCardInHand(ManipulationCard.ManipulationCardName.KrytykaWladzy);
+            if (cardNumber != -1)
+            {
+                gameManager.SelectManipulationCard(cardNumber);
+                gameManager.PlayManipulationCard();
+                gameManager.SelectPawn(children[myPawnPosition-1].transform.GetChild(0).GetComponent<PawnManager>().name, this);
+                return;
+            }
+
+            cardNumber = CheckCardInHand(ManipulationCard.ManipulationCardName.ListaSpoleczna);
+            if (cardNumber != -1)
+            {
+                gameManager.SelectManipulationCard(cardNumber);
+                gameManager.PlayManipulationCard();
+                gameManager.SelectQueue(gameManager.queues[(GameManager.Shop)pair.Key]);
+                return;
+            }
+        }
     }
 }

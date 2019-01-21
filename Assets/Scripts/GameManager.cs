@@ -894,7 +894,6 @@ public class GameManager : MonoBehaviour {
             }
         }
 
-        players[currentPlayer].MakeMove();
 
         if (phase == Phase.Supply)
         {
@@ -932,6 +931,8 @@ public class GameManager : MonoBehaviour {
 
             //players[currentPlayer].avlManipulationCards.;
         }
+
+        players[currentPlayer].MakeMove();
 
         if (phase == Phase.Opening)
         {
