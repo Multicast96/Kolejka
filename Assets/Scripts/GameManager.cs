@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour {
     public UIManager uiManager;
     public ScoreTab scoreTab;
     public uint numberOfProductsInDeliveryTruck = 20;
-    public uint numberOfDeliveryCards = 10;
+    public uint numberOfDeliveryCards = 15;
     Object pawnPrefab;
     //GameObject pawn;
     public GameObject[] blackPawns = new GameObject[5];
@@ -177,6 +177,12 @@ public class GameManager : MonoBehaviour {
     void Update()
     {
         CheckIsTabKeyPressed();
+        // przeskocz turę gracza jeśli nie ma pionków i jest faza stawiania
+        if (players[currentPlayer].pawnsInHand == 0 && phase == Phase.PawnsPlacing)
+        {
+            EndOfTurn();
+            return;
+        }
     }
 
     private void MoveCardsFromTrashShufleAndCreateDeliveryStack()
@@ -278,10 +284,11 @@ public class GameManager : MonoBehaviour {
         currentPlayer = (currentPlayer + 1) % numberOfPlayers;
         uiManager.UpdatePlayer(currentPlayer);
         uiManager.UpdateShoppingList(players[currentPlayer].shoppinglist.image);
-        if(phase == Phase.Manipulations)
-        {
-            uiManager.UpdateManipulationCards();
-        }      
+        //if(phase == Phase.Manipulations)
+        //{
+        //    uiManager.UpdateManipulationCards();
+        //}
+        uiManager.UpdateManipulationCards();
     }
 
     /// <summary>
@@ -310,7 +317,6 @@ public class GameManager : MonoBehaviour {
                 break;
             if((!queue.Value.isFull) && (!queue.Value.hasBlackPawn))
             {
-                //Object prefab = AssetDatabase.LoadAssetAtPath("Assets/Prefabs/Black Pawn.prefab", typeof(GameObject));
                 var pawn = GameObject.Find(string.Format("{0} Vendor", shopLiteral[queue.Key]));
                 foreach (FieldManager field in queue.Value.gameObject.GetComponentsInChildren<FieldManager>())
                 {
@@ -362,6 +368,7 @@ public class GameManager : MonoBehaviour {
         var storeCardFieldStack = products[store];
         for (int i = 0; i < numberOfProducts; i++)
         {
+            if (storeTruckStack.IsEmpty()) break;
             var card = storeTruckStack.Pop();
             storeCardFieldStack.Push(card);
         }
@@ -390,8 +397,8 @@ public class GameManager : MonoBehaviour {
             // i sklep nie jest pusty
             while (!product_pile.Value.IsEmpty() && !queues[product_pile.Key].IsEmpty())
             {
-                queues[product_pile.Key].MovePawnsByOneFieldToTheFrontOfTheQueue();
                 DeleteFirstPawnInQueueDictionary(queues[product_pile.Key]);
+                queues[product_pile.Key].MovePawnsByOneFieldToTheFrontOfTheQueue();
                 product_pile.Value.Pop();
             }
         }
@@ -452,7 +459,7 @@ public class GameManager : MonoBehaviour {
 
             EndOfTurn();
         }
-        else if (playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.SzczesliwyTraf && isPawnSelected == true)
+        else if (isPawnSelected == true && playedManipulationCard.getCardName() == ManipulationCard.ManipulationCardName.SzczesliwyTraf)
         {
             int tmpPawnQue = 0;
             int tmpPawnField = 0;
@@ -817,14 +824,21 @@ public class GameManager : MonoBehaviour {
     /// </summary>
     public void TePeZet()
     {
-        for (int i = 1; i < 4; i++)
+        if (day != Day.Saturday)
         {
-            var deliveryField = GameObject.Find(string.Format("Delivery Cards Field {0}", i));
-            var card = deliveryField.GetComponentInChildren<DeliveryCard>();
-            var trashField = GameObject.Find("Trash");
-            card.transform.parent = trashField.transform;
-            card.transform.position = trashField.transform.position;
-            trashField.GetComponent<StackManager>().Push(card.gameObject);
+            for (int i = 1; i < 4; i++)
+            {
+                var deliveryField = GameObject.Find(string.Format("Delivery Cards Field {0}", i));
+                var card = deliveryField.GetComponentInChildren<DeliveryCard>();
+                var trashField = GameObject.Find("Trash");
+                card.transform.parent = trashField.transform;
+                card.transform.position = trashField.transform.position;
+                trashField.GetComponent<StackManager>().Push(card.gameObject);
+            }
+        }
+        else
+        {
+            MoveCardsFromTrashShufleAndCreateDeliveryStack();
         }
     }
 
@@ -837,7 +851,7 @@ public class GameManager : MonoBehaviour {
         // USTAWIENIE DNIA
 
 
-        if (currentPlayer == markedPlayer)
+        if (currentPlayer == 0)
         {
             if (phase == Phase.PawnsPlacing)
             {
@@ -862,35 +876,8 @@ public class GameManager : MonoBehaviour {
             else
             {
                 turn = 0;
-
-                if (phase != Phase.TePeZet)
-                {
-                    phase++;
-                    uiManager.UpdatePhase(phase);
-                }
-                else
-                {
-                    phase = Phase.PawnsPlacing;
-                    uiManager.UpdateManipulationCards();
-
-                    if (markedPlayer < numberOfPlayers)
-                        markedPlayer++;
-                    else
-                        markedPlayer = 0;
-
-                    if (day != Day.Saturday)
-                    {
-                        day++;
-                        uiManager.UpdateDay(day);
-                        this.UpdateDay(day);
-                    }
-                    else
-                    {
-                        day = Day.Monday;
-                        week++;
-                        uiManager.UpdateWeek(week);
-                    }
-                }
+                phase++;
+                uiManager.UpdatePhase(phase)
             }
         }
 
@@ -903,8 +890,7 @@ public class GameManager : MonoBehaviour {
             //phase++;
             uiManager.UpdatePhase(phase);
         }
-
-        if (phase == Phase.Manipulations)
+        else if (phase == Phase.Manipulations)
         {
             if (day != Day.Saturday && turn == 0)
             {
@@ -914,9 +900,6 @@ public class GameManager : MonoBehaviour {
                 players[currentPlayer].SetAvlManipulationCards();
                 players[currentPlayer].UnFold();
             }
-
-            if (players[currentPlayer].fold == true)
-                EndOfTurn();
 
             isManipulationCardPlayed = false;
             isPawnSelected = false;
@@ -929,36 +912,36 @@ public class GameManager : MonoBehaviour {
             else
                 uiManager.UpdateManipulationCards();
 
-            //players[currentPlayer].avlManipulationCards.;
+            if (players[currentPlayer].fold == true)
+                EndOfTurn();
         }
-
-        players[currentPlayer].MakeMove();
-
-        if (phase == Phase.Opening)
+        else if (phase == Phase.Opening)
         {
             TakeProducts();
             uiManager.UpdateManipulationCards();
             phase++;
             uiManager.UpdatePhase(phase);
-        }
-
-        if (phase == Phase.Trading)
-        {
             EndOfTurn();
         }
-
-        if (phase == Phase.TePeZet)
+        else if (phase == Phase.Trading)
+        {
+            phase++;
+            uiManager.UpdatePhase(phase);
+            EndOfTurn();
+        }
+        else if (phase == Phase.TePeZet)
         {
             TePeZet();
             phase = Phase.PawnsPlacing;
             uiManager.UpdatePhase(phase);
             uiManager.UpdateManipulationCards();
-            if (markedPlayer < numberOfPlayers)
+            if (markedPlayer < numberOfPlayers - 1)
                 markedPlayer++;
             else
                 markedPlayer = 0;
             currentPlayer = markedPlayer;
             uiManager.UpdatePlayer(currentPlayer);
+
             if (day != Day.Saturday)
             {
                 day++;
@@ -970,8 +953,10 @@ public class GameManager : MonoBehaviour {
                 day = Day.Monday;
                 week++;
                 uiManager.UpdateWeek(week);
+                uiManager.UpdateDay(day);
             }
         }
+        players[currentPlayer].MakeMove();
     }
 }
 

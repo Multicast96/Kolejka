@@ -40,50 +40,52 @@ public class PlayerAI : Player
     // +15 jeśli wszyscy gracze zrobią ruch i nie będzie już można dołożyć pionka do tej kolejki. (wyrzucone)
     private void PlacingPawnsPhase()
     {
-        var results = new Dictionary<GameManager.Shop, int>();
-        foreach (var queue in gameManager.queues)
+        if (pawnsInHand > 0)
         {
-            int thisQueueResult = 0;
-            if (!pawnsInQueue.Contains(queue.Key)) pawnsInQueue[queue.Key] = 0;
-
-            if (!shoppinglist.items.ContainsKey(queue.Key))
+            var results = new Dictionary<GameManager.Shop, int>();
+            foreach (var queue in gameManager.queues)
             {
-                results[queue.Key] = 0;
-                continue;
+                int thisQueueResult = 0;
+                if (!pawnsInQueue.Contains(queue.Key)) pawnsInQueue[queue.Key] = 0;
+
+                if (!shoppinglist.items.ContainsKey(queue.Key))
+                {
+                    results[queue.Key] = 0;
+                    continue;
+                }
+
+                if ((int)pawnsInQueue[queue.Key] == 0)
+                    thisQueueResult += 10 + 5 * shoppinglist.items[queue.Key];
+                else
+                    thisQueueResult += 5 * (shoppinglist.items[queue.Key] - (int)pawnsInQueue[queue.Key]);
+
+
+                FieldManager[] children = queue.Value.gameObject.GetComponentsInChildren<FieldManager>();
+                int placesTaken = 0;
+                foreach (FieldManager child in children) { if (child.isTaken) placesTaken++; };
+                thisQueueResult += 8 - placesTaken;
+
+                results[queue.Key] = thisQueueResult;
             }
 
-            if ((int)pawnsInQueue[queue.Key] == 0)
-                thisQueueResult += 10 + 5 * shoppinglist.items[queue.Key];
-            else
-                thisQueueResult += 5 * (shoppinglist.items[queue.Key] - (int)pawnsInQueue[queue.Key]);
+            var sortedResults = (from kv in results orderby kv.Value descending select kv).ToList();
 
-
-            FieldManager[] children = queue.Value.gameObject.GetComponentsInChildren<FieldManager>();
-            int placesTaken = 0;
-            foreach (FieldManager child in children) { if (child.isTaken) placesTaken++; };
-            thisQueueResult += 8 - placesTaken;
-
-            results[queue.Key] = thisQueueResult;
-        }
-
-        var sortedResults = (from kv in results orderby kv.Value descending select kv).ToList();
-
-        foreach (var result in sortedResults)
-        {
-            if (!shoppinglist.items.ContainsKey(result.Key)) continue;
-            Debug.Log(String.Format("Kolejka:{0} Ilość produktów:{1} Ilość pionków:{2} Wynik:{3}", result.Key, shoppinglist.items[result.Key], pawnsInQueue[result.Key], result.Value));
-        }
-
-        foreach (var result in sortedResults)
-        {
-            if (gameManager.queues[result.Key].PutPawn())
+            foreach (var result in sortedResults)
             {
-                Debug.Log(String.Format("Placing in: {0}", result.Key.ToString()));
-                pawnsInQueue[result.Key] = (int)pawnsInQueue[result.Key] + 1;
-                break;
+                if (!shoppinglist.items.ContainsKey(result.Key)) continue;
+                Debug.Log(String.Format("Kolejka:{0} Ilość produktów:{1} Ilość pionków:{2} Wynik:{3}", result.Key, shoppinglist.items[result.Key], pawnsInQueue[result.Key], result.Value));
+            }
+
+            foreach (var result in sortedResults)
+            {
+                if (gameManager.queues[result.Key].PutPawn())
+                {
+                    Debug.Log(String.Format("Placing in: {0}", result.Key.ToString()));
+                    pawnsInQueue[result.Key] = (int)pawnsInQueue[result.Key] + 1;
+                    break;
+                }
             }
         }
-
     }
 
     private int CheckCardInHand(ManipulationCard.ManipulationCardName card)

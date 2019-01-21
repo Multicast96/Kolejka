@@ -93,6 +93,8 @@ public class QueueManager : MonoBehaviour
                     gameManager.scoreTab.UpdateScoreTab();
                     pawn.player.PickUpPawn(pawn);
                 }
+                else if (pawn.player == null)
+                    this.hasBlackPawn = false;
             }
             // ustaw pierwsze pole jako niezajete jesli za nim nie ma juz pionkow
             if (!children[1].isTaken)
